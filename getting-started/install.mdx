@@ -1,0 +1,87 @@
+---
+title: "Install with npm"
+description: "Install the Mochiii terminal app with npm, start it in a project, and update or remove it."
+---
+
+## Before you start
+
+You need [Node.js](https://nodejs.org) version 18 or later, which includes npm.
+
+Mochiii has builds for:
+
+| System | Notes |
+|---|---|
+| Linux, x64 and ARM64 | The regular build needs glibc for code search. On a system that uses musl, such as Alpine, npm installs a build **without code search**. |
+| macOS, Apple Silicon | Intel Macs are not supported. |
+| Windows, x64 and ARM | On ARM, Windows runs the x64 build. |
+
+## Install
+
+```bash
+npm install -g mochiii
+```
+
+npm installs the `mochiii` package and the one platform package that matches your computer.
+
+Check that it worked:
+
+```bash
+mochiii --version
+```
+
+## Start it in a project
+
+Go to a project folder and run:
+
+```bash
+cd path/to/your/project
+mochiii
+```
+
+Mochiii works on the folder it starts in. If you start it in your home folder, it prints a note saying that is not a project folder, and never offers to index it.
+
+### First run in a folder
+
+Before the chat opens, Mochiii offers to download its code-search model, once for your computer, and to index the folder:
+
+```text
+Index /path/to/your/project now? [Y/n/never]
+```
+
+- `Y`, or Enter, builds the index.
+- `n` skips it. Mochiii asks again next time.
+- `never` skips it, and Mochiii does not ask again for that folder.
+
+Options for this step:
+
+| Command | Effect |
+|---|---|
+| `mochiii --index` | Index the folder, or index it again, then open the chat |
+| `mochiii --no-index` | Do not offer to index this folder |
+| `MOCHIII_NO_INDEX=1 mochiii` | The same as `--no-index`, set as an environment variable |
+
+Mochiii also needs a model before it can answer. If you ask a question before one is set up, it asks you to paste a provider API key.
+
+## Update
+
+```bash
+npm install -g mochiii@latest
+```
+
+## Stop and remove
+
+Mochiii runs a background service for each project folder you use it in. In each folder you used, run:
+
+```bash
+mochiii --stop
+```
+
+Then remove the package:
+
+```bash
+npm uninstall -g mochiii
+```
+
+## If it does not start
+
+If `mochiii` says the package for your computer is not installed, run `npm install -g mochiii` again. The `mochiii` package depends on a separate package for each platform, and your install is missing the one for your computer.

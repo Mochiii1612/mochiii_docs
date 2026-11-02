@@ -1,0 +1,33 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "mint",
+  "name": "Mochiii",
+  "description": "Documentation for Mochiii 1.5.0, the terminal coding assistant.",
+  "colors": {
+    "primary": "#334155",
+    "light": "#94A3B8",
+    "dark": "#1E293B"
+  },
+  "appearance": {
+    "default": "system"
+  },
+  "navigation": {
+    "groups": [
+      {
+        "group": "Introduction",
+        "pages": ["index"]
+      },
+      {
+        "group": "Getting started",
+        "pages": ["getting-started/install"]
+      },
+      {
+        "group": "MCP",
+        "pages": ["mcp/add-a-server"]
+      }
+    ]
+  },
+  "footer": {
+    "socials": {}
+  }
+}
