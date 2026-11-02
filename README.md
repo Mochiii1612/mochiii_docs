@@ -15,7 +15,7 @@ The site describes Mochiii **1.5.0**.
 
 ## Preview locally
 
-With Node.js 19 or later:
+With Node.js 18 or later:
 
 ```bash
 npx mint dev
