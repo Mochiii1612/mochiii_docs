@@ -1,0 +1,87 @@
+---
+title: "Add an MCP server"
+description: "Add an MCP server to the Mochiii terminal app, give it a key, check it, and remove it."
+---
+
+An MCP server is a program that gives Mochiii extra tools. This page covers adding one that runs on your computer, from the terminal app.
+
+<Warning>
+  An MCP server you add runs as an ordinary program with your full privileges. Mochiii cannot confine it. Only add a server whose program you trust.
+</Warning>
+
+## Add a server
+
+Inside the Mochiii chat, type `/mcp-server add`, then a name you choose, then the command that starts the server:
+
+```text
+/mcp-server add files npx -y @modelcontextprotocol/server-filesystem /home/me/notes
+```
+
+Use a full path for the folder. Mochiii splits the line into words itself, with quotes keeping a path that has spaces together. It does not run a shell.
+
+Mochiii does not add the server yet. It shows what you are agreeing to: the exact command, that it runs with your full privileges, which environment variables it is given, and where it starts. To go on, type the server's name, here `files`, and press Enter.
+
+Anything else, or Esc, cancels, and nothing is stored. If you cancel by typing something else, Mochiii puts what you typed back in the input box. Clear it before you type your next command.
+
+Mochiii then starts the server once and asks it for its tools. It tells you how many it offers. They are available from your next question, and each tool asks before it runs.
+
+The first start can be slow, for example while `npx` downloads the server. If the server does not start in time, Mochiii says so and keeps it. Run `/mcp-server check files` to try again. Add `--timeout 60` to wait longer.
+
+## Give a server a key
+
+Some servers read a key from an environment variable. Name the variable when you add the server, with `--env`:
+
+```text
+/mcp-server add github --env GITHUB_TOKEN npx -y @modelcontextprotocol/server-github
+```
+
+`--env` takes the variable's **name**. Do not type the value on that line. Mochiii refuses a line like `--env GITHUB_TOKEN=abc` or `GITHUB_TOKEN=abc npx ...`, because the command line is stored and shown.
+
+Until the variable has a value, the server starts without it, and Mochiii says so when you add the server. Give the value with `/mcp-server key`:
+
+```text
+/mcp-server key github GITHUB_TOKEN
+```
+
+Mochiii then asks for the value in a hidden prompt. Type or paste it and press Enter. Esc cancels. The server uses the value from its next start.
+
+The variable must be one the server was added with `--env`. If it is not, Mochiii still asks for a value, then refuses it and stores nothing. To add a variable, remove the server and add it again with `--env`.
+
+When a server starts, it uses the value you gave it with `/mcp-server key`. If there is none, it uses the variable from the environment Mochiii's background service was started with. To use that route, export the variable, or put it in a `.env` file, before you start Mochiii.
+
+## Look at your servers
+
+| Command | What it does |
+|---|---|
+| `/mcp-server` | Lists your servers and whether each one is connected, the tools the model would be offered, and any tools left off that list |
+| `/mcp-server check [name] [--timeout N]` | Starts one server, or all of them, to see whether they work. `N` is seconds, from 1 to 120 |
+| `/mcp-server get name` | Shows one server: whether it is connected, its command, the file it is defined in, its variables and whether each has a stored value, and where it starts |
+| `/mcp-server disable name` | Pauses a server and keeps it for later |
+| `/mcp-server enable name` | Resumes a paused server |
+| `/mcp-server remove name` | Removes a server you added, and the keys you gave it |
+
+## How many tools the model sees
+
+The model is shown at most 24 tools at a time. Mochiii's own tools come first. For the rest, each question gets the tools that fit it best, and the model looks up the others when a task needs them.
+
+When you add a server that has more tools than fit, Mochiii tells you how many are not on the default list, and names them. `/mcp-server` lists them too.
+
+## Where things are kept
+
+| What | Where |
+|---|---|
+| The servers you added: name, command, arguments and variable names | `~/.mochiii/mcp-servers.json` |
+| Keys you gave with `/mcp-server key` | `~/.mochiii/mcp-secrets.json`, readable only by you |
+| Servers you approved from a project's `.mcp.json` | `~/.mochiii/mcp-approvals.json`, readable only by you |
+
+None of these files is in your project.
+
+A project cannot start a server by itself. Its `.mcp.json` file can only propose one. `/mcp-server` shows a proposed server as pending, and it does not start, not even for `/mcp-server check`, until you approve it with `/mcp-server approve name`. Approving shows the same warning as adding, and you type the server's name to go on. The approval is for that exact definition in that folder: if the project changes it, you are asked again.
+
+A server you add starts in a private folder of its own, not in your project. If a server has to start inside the project, add it with `--in-project`:
+
+```text
+/mcp-server add name --in-project command args
+```
+
+Mochiii then warns that a project you open can change what a launcher such as `npx` runs. If a server only needs the project's files, give it the project's path as an argument instead.

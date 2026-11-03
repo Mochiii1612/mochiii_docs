@@ -1,0 +1,31 @@
+---
+title: "Mochiii documentation"
+description: "What Mochiii is, and where to start. These pages describe version 1.5.0."
+---
+
+Mochiii is a terminal coding assistant that works on the project folder you start it in.
+
+It comes as a terminal app, and as a VS Code extension. These pages describe the terminal app, version 1.5.0.
+
+## What you need to use it
+
+- **A model.** Mochiii asks a language model to answer. You give it an API key from a model provider, or you point it at a model server running on your own computer.
+- **A project folder.** Mochiii works on the folder it starts in. Start it inside a project, not in your home folder.
+
+## Code search
+
+Mochiii can build a search index of a project folder, so it can find the code that relates to your question. On first run in a folder it asks whether to build one. The index is made on your computer, and is kept in the `.mochiii/index` folder inside the project.
+
+## MCP servers
+
+You can add MCP servers to give Mochiii more tools. See [Add an MCP server](/mcp/add-a-server).
+
+## Where to start
+
+<Card title="Install Mochiii" icon="download" href="/getting-started/install">
+  Install the terminal app with npm and start it in a project.
+</Card>
+
+<Note>
+  This documentation is being written in stages. Only a few pages exist so far.
+</Note>
