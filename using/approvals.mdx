@@ -1,0 +1,70 @@
+---
+title: "Approvals"
+description: "What the Mochiii terminal app asks before a tool runs or a file changes, what each answer does, and how long it lasts."
+---
+
+## What asks first
+
+Each tool the model can use has a policy. `allow` runs without asking you. `ask` asks you first. `/mcp-server` lists every tool with its policy.
+
+Some calls ask you even when the tool's policy is `allow`:
+
+- reading a file outside the project
+- a web call that would send text the model chose
+- a command that would run in your real project, not in a copy of it
+- a call that would start another program
+
+Every tool from an MCP server you added has the policy `ask`.
+
+## The question
+
+The question is one line, saying what will happen. For example:
+
+| The call | The question |
+|---|---|
+| A build or test command, run confined | `Run command: <command> ?` |
+| A shell command, in a copy of the project | `Run in this turn's working copy: <command> ?` |
+| A shell command, in your real project | `Run in your terminal: <command> ?` |
+| A file outside the project | `Read outside this project: <path> ?` |
+| A web search | `Search the web for: <query> ?` |
+| A web page | `Open web page: <address> ?` |
+| Deleting a file | `Delete <path> (moved to Mochiii's trash, where it can be restored) ?` |
+| Moving a file | `Move <from> to <to> ?` |
+| A tool from an MCP server | `Allow <server>/<tool>: <arguments> ?` |
+
+The arguments are shown in full. A line under the question can warn you, for example:
+
+- `NOT SANDBOXED: a separate program with your full access`
+- `LEAVES YOUR MACHINE: sent to a third party over the internet`
+- `RUNS IN YOUR REAL PROJECT, not in a private copy`
+- `marked destructive`
+
+A tool from an MCP server is named with its server, as `server/tool`. An MCP server can describe its tools with hints. A tool is `marked destructive` when its server's hints say it is destructive, or when the server gives hints and does not say the tool is not destructive. A tool with no hints at all is not marked. A tool its server marks read-only is still `marked destructive` unless the server also says it is not destructive.
+
+## Your answer
+
+The keys are shown under the question: `y yes · a yes for this turn · n no`.
+
+| Key | What it does |
+|---|---|
+| `y` | Runs this call, with these arguments, once |
+| `a` | Runs this call, and lets the same tool run without asking for the rest of this turn |
+| `s` | Runs this command, and the same command again while the active spec stays active. Shown only when it applies |
+| `n` | Does not run it. The model is told you declined |
+| `Esc` or `q` | Does not run it, and stops the turn |
+
+Any other key does nothing. If the question is longer than the screen, `y`, `a` and `s` work only after you have read it all: `PgDn` reads on.
+
+After you answer, a line stays in the chat, for example `✓ approved builtin__run_command` or `✗ denied files__write_file`.
+
+## How long a yes lasts
+
+- **`y`** covers one call.
+- **`a`** lasts until the turn ends. In a long task, the whole task is one turn, and the key reads `a yes for this whole task`. For a tool that runs code, reaches the internet or is marked destructive, `a` covers only the same arguments, not every call to the tool. For a file outside the project, it covers that path only.
+- **`s`** lasts while the same spec stays active. It ends when you type `/spec off`, choose another spec, or quit. See [Plan and spec](/using/plan-and-spec).
+
+None of these answers is written to disk. There is no answer that lasts beyond the turn, except `s` until you quit.
+
+## Edits
+
+Edits the model proposes are shown to you as diffs, one at a time, at the end of the turn. The keys are `y apply · n skip · q cancel remaining`. Your files change only when you press `y`.

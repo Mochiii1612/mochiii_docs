@@ -15,15 +15,36 @@
     "groups": [
       {
         "group": "Introduction",
-        "pages": ["index"]
+        "pages": [
+          "index"
+        ]
       },
       {
         "group": "Getting started",
-        "pages": ["getting-started/install"]
+        "pages": [
+          "getting-started/install"
+        ]
+      },
+      {
+        "group": "Using Mochiii",
+        "pages": [
+          "using/terminal-commands",
+          "using/plan-and-spec",
+          "using/approvals",
+          "using/saved-sessions"
+        ]
       },
       {
         "group": "MCP",
-        "pages": ["mcp/add-a-server"]
+        "pages": [
+          "mcp/add-a-server"
+        ]
+      },
+      {
+        "group": "Reference",
+        "pages": [
+          "reference/settings-and-files"
+        ]
       }
     ]
   },

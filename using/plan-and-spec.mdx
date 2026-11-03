@@ -1,0 +1,61 @@
+---
+title: "Plan and spec"
+description: "Plan a change with /plan, and write, use and check a spec with /spec, in the Mochiii terminal app."
+---
+
+## Plan a change
+
+Type `/plan`, then what you want to do:
+
+```text
+/plan add a --verbose flag to the CLI
+```
+
+The model reads the project and writes a plan. In this turn:
+
+- It can read files and search the code.
+- It is not given the tools that run commands, reach the internet or start other programs.
+- Your MCP servers are not connected, and Mochiii says so.
+- No edits are offered. If the model writes one anyway, Mochiii shows `plan mode: withheld a proposed edit to <file>`.
+
+To carry out the plan, ask again without `/plan`.
+
+## Write a spec
+
+A spec is a Markdown file under `specs/` in your project. It says what to build and lists success criteria. Type `/spec`, then the goal:
+
+```text
+/spec add a --verbose flag to the CLI
+```
+
+The model writes one new file under `specs/` and shows it to you as an edit to review. It can read the project, and it can write nothing else. When you accept the file, it becomes the **active spec**.
+
+Each success criterion is a line like this:
+
+```text
+- [ ] C1: <something you can check> -- check: <a command, or what to look at>
+```
+
+## Use a spec
+
+| Command | What it does |
+|---|---|
+| `/spec use <file>` | Makes a spec the active one. `demo`, `demo.md` and `specs/demo.md` all name `specs/demo.md` |
+| `/spec show` | The active spec, and the specs in this project |
+| `/spec off` | No active spec |
+| `/spec build` | Builds what the active spec describes |
+| `/spec check` | Checks the project against the active spec |
+
+While a spec is active, every question you ask works to it, and the line at the top of the chat shows its name. Mochiii remembers the active spec for this project the next time you start it.
+
+## Check against a spec
+
+`/spec check` needs an active spec. Without one, it says `no active spec to check against: /spec use <file>, or write one with /spec <goal>`.
+
+For each success criterion, the model finds out whether the project meets it, and records it as met, unmet or unknown, with its evidence. It may run the check a criterion names. The command runs in a copy of the project.
+
+In this turn the model cannot reach the internet or start other programs, and your MCP servers are not connected. It changes no files except the spec: Mochiii offers an edit to the spec that ticks the criteria that are met and unticks the ones that are not, and you review it like any other edit.
+
+The result starts with a line like `spec check -- specs/demo.md: 1 of 2 criteria met`, then one line for each criterion, marked `✓`, `✗` or `?`.
+
+While a spec is active, the approval prompt for a command can offer one more answer: yes to the same command for as long as that spec stays active. See [Approvals](/using/approvals).

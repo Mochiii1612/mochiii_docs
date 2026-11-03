@@ -1,0 +1,79 @@
+---
+title: "Settings and file locations"
+description: "The settings you can change in Mochiii 1.5.0, and the files and folders it creates."
+---
+
+## Settings you change with a command
+
+| Setting | How | Kept |
+|---|---|---|
+| Provider and key | `/provider` or `/connect`. `/connect show` says which key is in use, `/connect forget` removes the stored one | In `~/.mochiii/credentials.json` |
+| Model | `/model`, `/model <name>`, `/model clear` | With the stored key. With a key from the environment, until the background service stops |
+| Tools for a model on this computer | `/agent on`, `/agent off` | In `local-models.json` |
+| Internet tools for a model on this computer | `/web on`, `/web off` | In `local-models.json` |
+| Mouse capture | `/mouse` | Not kept |
+| Indexing this folder | Answer `never` when Mochiii offers to index the folder | In `no-index` |
+| Active spec | `/spec use <file>`, `/spec off` | In `active-spec-<project>` |
+| Rules for this project | `/remember <text>`, `/forget <number>` | In `rules/<project>.md` |
+| MCP servers | `/mcp-server`. See [Add an MCP server](/mcp/add-a-server) | In `~/.mochiii/` |
+
+A file named without a folder is in the state folder, `~/.local/state/mochiii/`, described below.
+
+The spending limits are 3.00M tokens or $1.00 for a session, and 15.00M tokens or $5.00 a day for every project on the computer. `/budget` shows where both stand. Once a limit is at 80% or more, `/budget more` allows another allotment of it.
+
+## Settings you change with the environment
+
+Set these before you start Mochiii. Mochiii's background service reads its variables when it starts, so run `mochiii --stop` first if it is already running.
+
+| Variable | What it does |
+|---|---|
+| `MOCHIII_API_KEY` | A provider key. It is used instead of a stored key |
+| `MOCHIII_API_BASE` | The address of the provider's API. Without it, Mochiii uses `https://openrouter.ai/api/v1` |
+| `MOCHIII_MODEL` | One model, named as the server at `MOCHIII_API_BASE` names it. It replaces the built-in list of models |
+| `MOCHIII_NO_INDEX=1` | Do not offer to index this folder. The same as `mochiii --no-index` |
+| `MOCHIII_MAX_TURNS` | How many turns the chat on screen keeps before it trims the oldest. 500 by default |
+| `MOCHIII_MAX_TRANSCRIPT_BYTES` | How much text the chat on screen keeps before it trims the oldest. 2.0 MB by default |
+| `NO_COLOR` | Any value turns colour off |
+| `XDG_STATE_HOME` | Moves the state folder, below, to `$XDG_STATE_HOME/mochiii` |
+
+## Files and folders
+
+`<project>` is a short code Mochiii makes from the project folder's path. It is the same code in every file name below.
+
+### In your home folder: `~/.mochiii/`
+
+| Path | What it holds |
+|---|---|
+| `credentials.json` | The provider key you gave, the address it is for, and the model you chose |
+| `github.json` | The GitHub token you gave with `/github connect` |
+| `mcp-servers.json` | The MCP servers you added |
+| `mcp-secrets.json` | Keys you gave MCP servers |
+| `mcp-approvals.json` | Servers you approved from a project's `.mcp.json` |
+| `models/` | The code-search models, downloaded once for the computer |
+
+Each of these is created the first time it is needed.
+
+### The state folder: `~/.local/state/mochiii/`
+
+| Path | What it holds |
+|---|---|
+| `memory.db` | The turns of each project's current chat |
+| `history/<project>/` | Saved chats. See [Saved sessions](/using/saved-sessions) |
+| `rules/<project>.md` | The rules you saved with `/remember`. You can edit this file |
+| `active-spec-<project>` | The path of the active spec |
+| `local-models.json` | The `/agent` and `/web` settings |
+| `no-index` | The projects you answered `never` for |
+| `tasks/<project>/` | Long tasks, for `/task resume` |
+| `spend/` | Today's spending, counted against the day's limit |
+| `logs/daemon-<project>.log` | The background service's log |
+
+### In the project: `<project folder>/.mochiii/`
+
+| Path | What it holds |
+|---|---|
+| `index/` | The code-search index |
+| `logs/toolcalls.jsonl` | A record of each tool call and what was decided |
+| `backups/` | A copy of each file before and after an edit you accepted |
+| `trash/` | What the model deleted, so it can be restored |
+
+Specs are Markdown files in `<project folder>/specs/`. See [Plan and spec](/using/plan-and-spec).

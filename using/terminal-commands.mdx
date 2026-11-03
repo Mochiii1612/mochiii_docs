@@ -1,0 +1,104 @@
+---
+title: "Terminal commands"
+description: "The slash commands and keys in the Mochiii terminal app, version 1.5.0."
+---
+
+Type `/` in the chat to see the commands, and keep typing to narrow the list. `/help` prints every command and key.
+
+A command that needs more text, such as `/plan`, prints its usage when you type it alone, for example `usage: /plan <args…>`. A command Mochiii does not know is answered with `unknown command /name -- /help lists the commands`.
+
+## Keys
+
+| Key | What it does |
+|---|---|
+| `Esc` | Stops the turn in progress. The chat is kept. |
+| `Ctrl+C` | Stops the turn in progress. When nothing is running, press it twice to quit. |
+| `Ctrl+N` | Starts a new chat, as `/clear` does. |
+| `↑` `↓` | Scroll the chat. The mouse wheel sends these too. |
+| `Ctrl+↑` `Ctrl+↓` | Go back through what you typed before, commands included. `Alt+↑` and `Alt+↓` work too. |
+| Drag, then `Ctrl+Shift+C` | Select text and copy it, with the terminal's own copy. On a Mac, `Cmd+C`. |
+| `Ctrl+Shift+V` | Paste, with the terminal's own paste. On a Mac, `Cmd+V`. |
+
+## The chat
+
+| Command | What it does |
+|---|---|
+| `/help` | Lists the commands and keys |
+| `/clear` | Starts a new chat, as `Ctrl+N` does |
+| `/save [name]` | Saves the current chat. See [Saved sessions](/using/saved-sessions) |
+| `/resume <name or number>` | Continues a saved chat |
+| `/history` | Lists saved chats. `/history <n>` reads one, `/history delete <n>` deletes one |
+| `/compact` | Summarises the earlier part of the chat to save context. The whole chat is saved to `/history` first |
+| `/search <query>` | Searches past turns in this project |
+| `/usage` | Tokens and cost this session, and how full the context is |
+| `/context` | Shows the project folder, the model tier, and the last grounding |
+| `/mouse` | Turns mouse capture on or off. It starts off, so a drag selects text |
+| `/exit` | Quits |
+
+## Provider, model and spending
+
+| Command | What it does |
+|---|---|
+| `/provider` | Choose a provider, add its key, choose a model |
+| `/connect` | The same screens as `/provider`. `/connect <provider>` skips the list, `/connect local` finds a model server on this computer, `/connect show` says which key is in use, `/connect forget` removes the stored key |
+| `/model` | Opens the list of models. `/model list` prints it, `/model <name>` selects one, `/model clear` resets |
+| `/account` | Shows the provider, key and model in use, and the spend |
+| `/budget` | Spending limits for this session and today. `/budget more` raises a limit that is near |
+| `/agent` | For a model on this computer: `/agent on` gives it tools, `/agent off` takes them away, `/agent check` checks what the model can do |
+| `/web` | For a model on this computer: `/web on` lets it use the internet tools, `/web off` stops it. Off until you turn it on |
+
+## The project
+
+| Command | What it does |
+|---|---|
+| `/init` | A quick start checklist for this folder |
+| `/git` | Shows `git status` for the folder |
+| `/remember <text>` | Keeps a rule for every later chat in this project |
+| `/rules` | Lists the saved rules, numbered |
+| `/forget <number>` | Removes a saved rule |
+| `/mcp-server` | The tools Mochiii offers, and your MCP servers. See [Add an MCP server](/mcp/add-a-server) |
+| `/spec` | Writes and uses a spec. See [Plan and spec](/using/plan-and-spec) |
+
+What `/git` and `/search` print is sent to the model once, with your next question.
+
+## GitHub
+
+| Command | What it does |
+|---|---|
+| `/github` | Mochiii's GitHub account and this project's repository. `/github connect`, `use` and `disconnect` |
+| `/issue <number>` | A GitHub issue and its comments, attached to your next question |
+| `/issues [label]` | The open GitHub issues. A label narrows them |
+| `/pr` | Lists pull requests. `/pr <n>` shows one, `/pr <n> log` says why its CI failed |
+
+## Asking the model
+
+Each of these sends what you type after it to the model, with a task.
+
+| Command | What it does |
+|---|---|
+| `/plan <request>` | Makes an implementation plan, without edits, commands or network. See [Plan and spec](/using/plan-and-spec) |
+| `/explain <text>` | Explains code or a concept |
+| `/explore <text>` | Explores the codebase to gather context |
+| `/research <text>` | Researches a topic |
+| `/review <text>` | Code review |
+| `/security <text>` | Security review of the described code |
+| `/test <text>` | Adds or improves tests |
+| `/doc <text>` | Writes or improves documentation |
+| `/run <text>` | Suggests how to run, build or test something |
+| `/implement <text>` | Implements a new feature from end to end |
+| `/reason <text>` | A deep reasoning pass, which may use a different model tier |
+| `/team <text>` | Runs one turn through specialists. `/team:a,b` names them |
+
+## Long tasks
+
+These run as a long task, which works in steps and has its own budget.
+
+| Command | What it does |
+|---|---|
+| `/task <goal>` | Runs a long task. `/task` alone shows it; also `/task resume [note]`, `/task review`, `/task discard`, `/task budget` |
+| `/fix <bug>` | Finds and fixes a bug: reproduces, fixes and verifies it |
+| `/debug <issue>` | Debugs an issue to its root cause: reproduces, localizes, fixes and verifies |
+| `/refactor <change>` | Refactors without changing behaviour, built and tested step by step |
+| `/hunt <area>` | Hunts for real bugs, each proved by a failing run |
+
+When the model wants to run a command, edit a file or use a tool that asks first, Mochiii asks you. See [Approvals](/using/approvals).
