@@ -47,7 +47,7 @@ Mochiii then asks for the value in a hidden prompt. Type or paste it and press E
 
 The variable must be one the server was added with `--env`. If it is not, Mochiii still asks for a value, then refuses it and stores nothing. To add a variable, remove the server and add it again with `--env`.
 
-When a server starts, it uses the value you gave it with `/mcp-server key`. If there is none, it uses the variable from the environment Mochiii's background service was started with. To use that route, export the variable, or put it in a `.env` file, before you start Mochiii.
+When a server starts, it uses the value you stored with `/mcp-server key <name> <VARIABLE>`. If there is none, it uses the variable from the environment Mochiii's background service was started with. To use that route, run `mochiii --stop`, export the variable, then start Mochiii. A service that is already running does not see a variable you export after it started. Mochiii does not read `.env` files.
 
 ## Look at your servers
 
