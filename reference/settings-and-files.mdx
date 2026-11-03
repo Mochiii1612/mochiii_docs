@@ -3,19 +3,23 @@ title: "Settings and file locations"
 description: "The settings you can change in Mochiii 1.5.0, and the files and folders it creates."
 ---
 
+<Note>
+  The paths on this page are for Linux and macOS. Windows uses different folders, which are not described here.
+</Note>
+
 ## Settings you change with a command
 
-| Setting | How | Kept |
-|---|---|---|
-| Provider and key | `/provider` or `/connect`. `/connect show` says which key is in use, `/connect forget` removes the stored one | In `~/.mochiii/credentials.json` |
-| Model | `/model`, `/model <name>`, `/model clear` | With the stored key. With a key from the environment, until the background service stops |
-| Tools for a model on this computer | `/agent on`, `/agent off` | In `local-models.json` |
-| Internet tools for a model on this computer | `/web on`, `/web off` | In `local-models.json` |
-| Mouse capture | `/mouse` | Not kept |
-| Indexing this folder | Answer `never` when Mochiii offers to index the folder | In `no-index` |
-| Active spec | `/spec use <file>`, `/spec off` | In `active-spec-<project>` |
-| Rules for this project | `/remember <text>`, `/forget <number>` | In `rules/<project>.md` |
-| MCP servers | `/mcp-server`. See [Add an MCP server](/mcp/add-a-server) | In `~/.mochiii/` |
+| Setting | How to change it, and where it is kept |
+|---|---|
+| Provider and key | `/provider` or `/connect`. `/connect show` says which key is in use, `/connect forget` removes the stored one. Kept in `~/.mochiii/credentials.json` |
+| Model | `/model`, `/model <name>`, `/model clear`. Kept with the stored key. With a key from the environment, it lasts until the background service stops |
+| Tools for a model on this computer | `/agent on`, `/agent off`. Kept in `local-models.json` |
+| Internet tools for a model on this computer | `/web on`, `/web off`. Kept in `local-models.json` |
+| Mouse capture | `/mouse`. Not kept after you quit |
+| Indexing this folder | Answer `never` when Mochiii offers to index the folder. Kept in `no-index` |
+| Active spec | `/spec use <file>`, `/spec off`. Kept in `active-spec-<project>` |
+| Rules for this project | `/remember <text>`, `/forget <number>`. Kept in `rules/<project>.md` |
+| MCP servers | `/mcp-server`. See [Add an MCP server](/mcp/add-a-server). Kept in `~/.mochiii/` |
 
 A file named without a folder is in the state folder, `~/.local/state/mochiii/`, described below.
 
