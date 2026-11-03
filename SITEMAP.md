@@ -1,7 +1,7 @@
 # Proposed sitemap
 
 Describes Mochiii **1.5.0** (tag v1.5.0, commit 6cc75c3, and the 1.5.0 npm packages).
-Pages marked **written** are in this first slice. The rest are proposals.
+Pages marked **written** are on the site. The rest are proposals.
 
 Paths are relative to `Rav-2007/codeterminal-core` at v1.5.0. The structure is
 Cline-style in shape only: a hub, task-based sections, one job per page.
@@ -41,11 +41,11 @@ exist as named:
 
 | Page | Purpose | Status | Source files to check |
 |---|---|---|---|
-| `using/terminal` The terminal app and its commands | The chat screen, `/` commands, keys | proposed | `clients/tui/slash.go`, `clients/tui/chat.go`, `clients/tui/slashpopup.go` |
+| `using/terminal-commands` Terminal commands | `/` commands and keys | **written** | `clients/tui/slash.go`, `clients/tui/chat.go`, `clients/tui/slashpopup.go` |
 | `using/vscode` VS Code | Install, open the chat, what differs from the terminal | proposed | `clients/vscode/package.json`, `clients/vscode/src/extension.ts`, `clients/vscode/README.md` |
-| `using/plan-and-spec` Plan mode and specs | `/plan`, and `/spec`, `/spec build`, `/spec check` | proposed | `clients/tui/slash.go`, `daemon/spec*.go`, `docs/SPEC_WORKFLOW.md` (lead only) |
-| `using/approvals` Approvals and "marked destructive" | What you are asked, what the labels in the prompt mean | proposed | `clients/tui/chat.go` (approval risks, around line 2800), `clients/tui/approvalview.go`, `daemon/*classif*`, `models.agent.json` |
-| `using/sessions-and-memory` Saved chats and memory | `/save`, `/resume`, `/history`, `/remember`, `/rules`, `/forget` | proposed | `clients/tui/slash.go`, `clients/tui/history.go`, `clients/tui/rules.go`, `daemon/chatarchive.go` |
+| `using/plan-and-spec` Plan and spec | `/plan`, and `/spec`, `/spec build`, `/spec check` | **written** | `clients/tui/slash.go`, `daemon/spec*.go`, `docs/SPEC_WORKFLOW.md` (lead only) |
+| `using/approvals` Approvals | What you are asked, what the labels in the prompt mean | **written** | `clients/tui/chat.go` (approval risks, around line 2800), `clients/tui/approvalview.go`, `daemon/*classif*`, `models.agent.json` |
+| `using/saved-sessions` Saved sessions | `/save`, `/resume`, `/history` | **written** | `clients/tui/slash.go`, `clients/tui/history.go`, `clients/tui/rules.go`, `daemon/chatarchive.go` |
 
 ## MCP
 
@@ -62,9 +62,8 @@ exist as named:
 
 | Page | Purpose | Status | Source files to check |
 |---|---|---|---|
-| `reference/settings` Settings | VS Code settings and environment variables | proposed | `clients/vscode/package.json`, `daemon/mcpconfig.go`, `models.json` |
+| `reference/settings-and-files` Settings and file locations | Settings for the terminal app, environment variables, and where Mochiii keeps things | **written** | `clients/vscode/package.json`, `daemon/mcpconfig.go`, `models.json` |
 | `reference/commands` Commands | Every slash command and command-line flag | proposed | `clients/tui/slash.go`, `clients/tui/main.go`, `daemon/main.go` |
-| `reference/files` File locations | Where Mochiii keeps things | proposed | `daemon/mcpuser.go`, `daemon/mcpsecrets.go`, `clients/tui/firstrun.go`, credentials code (to find) |
 
 ## Troubleshooting
 

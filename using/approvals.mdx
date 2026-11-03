@@ -1,0 +1,88 @@
+---
+title: "Approvals"
+description: "What the Mochiii terminal app asks before a tool runs or a file changes, what each answer does, and how long it lasts."
+---
+
+## What asks first
+
+Each tool the model can use has a policy. `allow` runs without asking you. `ask` asks you first. `/mcp-server` lists every tool with its policy.
+
+Every tool from an MCP server you added has the policy `ask`.
+
+### Built-in tools that run without asking
+
+When Mochiii's background service starts, it writes this list to its log. These built-in tools run without asking you:
+
+| When the model has them | Tools |
+|---|---|
+| Every turn | `read_file`, `list_directory`, `grep`, `find_files`, `repo_map` |
+| When the project has a search index | `search_code` |
+| In a long task | `investigate`, `update_tasks`, `record_finding`, `checkpoint`, `finish_task` |
+| In `/spec check` | `record_criterion` |
+
+A long task is one started with `/task`, `/fix`, `/debug`, `/refactor` or `/hunt`.
+
+`read_file` still asks before it reads a file outside the project.
+
+Three more built-in tools can reach the internet: `web_fetch`, `web_search` and `github`. Their policy is `allow`, but the log says they run without asking only when the call cannot carry what the model has read: a search made before the turn has read anything, or a fetch of an address you typed or a search returned. Any other search or fetch asks first. For example, a fetch of an address you typed in your question runs without asking, and a fetch of an address the model wrote itself asks.
+
+## The question
+
+The question is one line, saying what will happen. For example:
+
+| The call | The question |
+|---|---|
+| A build or test command | `Run command: make --version ?` |
+| A shell command | `Run in this turn's working copy: ls ?` |
+| An edit | `Allow propose_edit: {"path": "main.go", "search": …, "replace": …} ?` |
+| A file outside the project | `Read outside this project: <path> ?` |
+| A web page | `Open web page: <address> ?` |
+| Deleting a file | `Delete new.txt (moved to Mochiii's trash, where it can be restored) ?` |
+| A tool from an MCP server | `Allow probe/plain: {"text": "first"} ?` |
+
+The arguments are shown in full. A line under the question can warn you, for example:
+
+- `NOT SANDBOXED: a separate program with your full access`, for a shell command or a tool from an MCP server
+- `LEAVES YOUR MACHINE: sent to a third party over the internet`, for a web call
+- `THE AGENT WROTE THIS ADDRESS ITSELF: you did not type it and no search returned it …`, for a web call
+- `marked destructive`
+
+A tool from an MCP server is named with its server, as `server/tool`. An MCP server can describe its tools with hints. Mochiii shows `marked destructive` for a tool the server gives hints for, unless the server says the tool is not destructive. A tool with no hints is not marked, and neither is one whose server says it is not destructive. A tool the server marks only as read-only is still `marked destructive`.
+
+## Your answer
+
+The keys are shown under the question: `y yes · a yes for this turn · n no`.
+
+| Key | What it does |
+|---|---|
+| `y` | Runs this call |
+| `a` | Runs this call, and lets the same tool run without asking for the rest of this turn, within the limits below |
+| `s` | Runs this command, and the same command again while the active spec stays active. Shown only when a spec is active and the call is a build or test command |
+| `n` | Does not run it. The model is told you declined |
+| `Esc` | Does not run it, and stops the turn |
+
+Other keys do nothing while a question is waiting.
+
+If the question is longer than the screen, the key line reads `↓ PgDn to read on · 38 more line(s) before yes · n no · esc stop`, and `y` does nothing until you have paged to the end.
+
+After you answer, a line stays in the chat, for example:
+
+- `✓ approved builtin__run_command`
+- `✓ approved builtin__read_file for the rest of this task`
+- `✓ approved builtin__sandbox_exec for this exact command while this spec is active`
+- `✗ denied probe__safe`
+
+## How long a yes lasts
+
+- **`y`** covers this call.
+- **`a`** lasts until the turn ends. In a long task the whole task is one turn, and the key reads `a yes for this whole task`. What it covers depends on the tool:
+  - a shell command, a web call, or a tool marked destructive: only the same arguments again. `a` for `ls` does not cover `pwd`.
+  - a file outside the project: only that path.
+  - any other tool, such as an MCP tool with no hints: every later call to it in the turn.
+- **`s`** lasts across turns while the same spec stays active. `/spec show` lists what you approved this way. It ends when you type `/spec off`, choose another spec, or quit.
+
+## Edits and deletes
+
+An edit the model proposes asks first, with `Allow propose_edit: … ?`. At the end of the turn, Mochiii shows each edit as a diff, with `y apply · n skip · q cancel remaining`. The file changes only when you press `y`, and Mochiii keeps a copy of it from before and after in `.mochiii/backups/`.
+
+A delete happens when you answer yes to it. The file is moved to `.mochiii/trash/` in the project.

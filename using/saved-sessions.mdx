@@ -1,0 +1,65 @@
+---
+title: "Saved sessions"
+description: "Save a chat, continue it later, and read or delete saved chats in the Mochiii terminal app."
+---
+
+A chat is kept only if you save it. Saved chats belong to the project folder you started Mochiii in.
+
+## Save a chat
+
+```text
+/save
+/save my-name
+```
+
+A chat can be saved once it has a question and an answer. Before that, `/save` says `history: nothing to save yet -- a chat is saved once it has a question and an answer`.
+
+Saving the same chat again after more work updates its saved copy. An update only adds to it.
+
+## Find and continue a chat
+
+| Command | What it does |
+|---|---|
+| `/history` | Lists the saved chats for this project, numbered |
+| `/history <n>` | Reads saved chat `n` |
+| `/resume <n>` | Continues saved chat `n` |
+| `/resume` | Lists the saved chats, as `/history` does |
+| `/history delete <n>` | Deletes saved chat `n` |
+
+`<n>` is the chat's number in the list, or the name you saved it under. Case does not matter. To read or continue a chat, the start of its name is enough if it fits only one chat. To delete one, give the whole name.
+
+With no saved chats, `/history` says `no saved chats in this project yet -- /save [name] keeps the current chat`.
+
+In the list, `⚠` marks a chat whose last answer did not finish, or whose spec still has open criteria.
+
+If the chat on screen is not saved, `/resume` tells you so before it replaces it.
+
+## Start a new chat
+
+`/clear` and `Ctrl+N` start a new chat. If the chat on screen is not saved, Mochiii asks first: `This chat is not saved. Save or clear?`
+
+| Key | What it does |
+|---|---|
+| `s` | Saves the chat, then starts a new one |
+| `c` | Starts a new one. This chat is not saved |
+| `Esc` | Keeps the chat |
+
+## What is kept
+
+Each saved chat is one file. It holds:
+
+- the chat's name, if you gave one, and its first and last question
+- when it started and ended, and how many turns it has
+- the active spec, if there was one
+- whether the last answer was cut off
+- each turn: who wrote it (you or the model), the text, and when
+
+The files are in `~/.local/state/mochiii/history/`, in a folder for each project, one gzipped file per chat. See [Settings and file locations](/reference/settings-and-files).
+
+There are limits:
+
+- at most 50 saved chats for each project
+- at most 20 MiB for all saved chats together
+- at most 8 MiB of text in one saved chat
+
+When a save goes over a limit, the oldest chats are removed, and Mochiii tells you. To remove every saved chat, delete the folder.
