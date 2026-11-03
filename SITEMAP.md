@@ -79,4 +79,4 @@ exist as named:
 | Page | Purpose | Status | Source files to check |
 |---|---|---|---|
 | `releases` Releases | What changed in each version | proposed | `docs/RELEASE_NOTES.md`, git tags |
-| `licence` Licence | One line | **blocked** | At v1.5.0 `LICENSE`, `README.md` and the npm metadata all say Apache-2.0, not proprietary. See the PR description. |
+| `licence` Licence | One line | **blocked** | Waiting for a decision. |
