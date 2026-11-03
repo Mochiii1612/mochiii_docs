@@ -8,9 +8,7 @@ The site describes Mochiii **1.5.0**.
 - `docs.json` is the site's configuration and navigation.
 - `*.mdx` pages are the published site.
 - `SITEMAP.md` is the planned list of pages.
-- `CLAIMS.md` lists each factual claim and where in the 1.5.0 source it was checked.
-- `NEXT_RELEASE.md` lists changes made after 1.5.0, kept for later.
-- `.mintignore` keeps the three working files above, and this README, off the site.
+- `.mintignore` keeps `SITEMAP.md`, and this README, off the site.
   They are still readable here on GitHub.
 
 ## Preview locally
