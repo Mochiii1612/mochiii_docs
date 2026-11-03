@@ -25,6 +25,8 @@ Anything else, or Esc, cancels, and nothing is stored. If you cancel by typing s
 
 Mochiii then starts the server once and asks it for its tools. It tells you how many it offers. They are available from your next question, and each tool asks before it runs.
 
+The first start can be slow, for example while `npx` downloads the server. If the server does not start in time, Mochiii says so and keeps it. Run `/mcp-server check files` to try again. Add `--timeout 60` to wait longer.
+
 ## Give a server a key
 
 Some servers read a key from an environment variable. Name the variable when you add the server, with `--env`:
