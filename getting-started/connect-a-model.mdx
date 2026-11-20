@@ -1,0 +1,68 @@
+---
+title: "Connect a model"
+description: "Give Mochiii a provider's API key, or point it at a model server on your own computer, in the terminal app or in VS Code."
+---
+
+Mochiii asks a language model to answer. Pick a provider and paste its key, or use a model server running on your computer.
+
+## A provider's API key
+
+Mochiii works with these providers. For most of them, it can tell the provider from the key itself.
+
+| | | |
+|---|---|---|
+| OpenRouter | OpenAI | Anthropic |
+| Google Gemini | NVIDIA | Groq |
+| DeepSeek | xAI | Mistral |
+| Together | Fireworks | Cerebras |
+| Moonshot | Hugging Face | SambaNova |
+| DashScope | Z.ai | |
+
+**In the terminal app,** `/provider` (or `/connect`) chooses a provider, asks for its key and then for a model. The key is asked for in a masked prompt, never as an argument, so it is not left in your terminal history or in the chat.
+
+**In VS Code,** paste a key when the panel asks, or type `/connect` in the chat. A key typed into the connect popup stays in the popup: a click elsewhere does not move it to the chat box. The key is kept in VS Code's secret storage, not in `settings.json`.
+
+Mochiii asks the provider whether the key works before it stores it. A key that every model refuses is not stored, and the key you had before stays in use. Switch provider or model at any time with `/provider` and `/model`.
+
+| Command | What it does |
+|---|---|
+| `/connect show` | Which key is in use, showing only its last four characters |
+| `/connect forget` | Removes the stored key. In VS Code, Forget key asks first |
+| `/account` | What you are connected to, and what you have spent |
+
+Keys are stored on your machine, readable only by you, and sent only to the provider that issued them.
+
+## A model on your computer
+
+Use a local model server: Ollama, LM Studio, llama.cpp or vLLM. No key is needed. For Ollama:
+
+```bash
+ollama serve
+ollama pull qwen2.5-coder:7b
+```
+
+Then, in the terminal app, pick **On this computer** from `/provider`, or run `/connect local`, which finds the servers running on this machine and lists their models.
+
+In VS Code, set `mochiii.apiBase` (for Ollama, `http://localhost:11434/v1`) and `mochiii.model` (for example `qwen2.5-coder:7b`). The environment variables `MOCHIII_API_BASE` and `MOCHIII_MODEL` work too.
+
+### Tools for a local model
+
+A model on your computer gets the code that matters with each question, and no tools, until you type `/agent on`. Mochiii then checks what that model can do, with a few small test questions on your computer, and uses it the way it can:
+
+- **Full agent:** tools to read, search, run and edit.
+- **Compact agent:** five tools and short instructions, for a model with a small context window, or one that only uses tools when its instructions are short.
+- **Chat:** for a model that cannot call tools. It answers with your code, and you review any edit it proposes.
+
+The line under the prompt says which one is in force. `/agent check` checks the model again, and `/agent off` takes the tools away.
+
+`/web on` lets the tools reach the internet; it stays off until you turn it on.
+
+### The context window
+
+Mochiii reads the model's context window from the server and sends only as much code as fits. When the window is small, it says so once, with how to make it bigger. Ollama, for example, gives a model 4,096 tokens unless told otherwise; agent mode needs at least 8,192. To give a model more room on Ollama, start it with a bigger context, for example `OLLAMA_CONTEXT_LENGTH=16384 ollama serve`.
+
+## Where your code goes
+
+- Your code is indexed and searched on your own machine. Nothing is uploaded to build the index.
+- Your question, and the parts of your code that answer it, go only to the model provider you chose. Text that looks like an API key is masked before it leaves.
+- What reaches a model provider depends on the model you pick. With a model on your computer, the question goes to that server.

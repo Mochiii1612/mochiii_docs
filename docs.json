@@ -2,14 +2,32 @@
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
   "name": "Mochiii",
-  "description": "Documentation for Mochiii 1.5.0, the terminal coding assistant.",
+  "description": "An AI coding agent that knows your codebase, in VS Code and in your terminal. Mochiii reads your project, answers questions about it, writes and fixes code, runs your tests, and works through long tasks.",
   "colors": {
-    "primary": "#334155",
-    "light": "#94A3B8",
-    "dark": "#1E293B"
+    "primary": "#C2436B",
+    "light": "#F08BB0",
+    "dark": "#9E3557"
   },
+  "logo": {
+    "light": "/images/logo-light.png",
+    "dark": "/images/logo-dark.png"
+  },
+  "favicon": "/favicon.png",
   "appearance": {
     "default": "system"
+  },
+  "navbar": {
+    "links": [
+      {
+        "label": "Website",
+        "href": "https://www.mochiii.in"
+      }
+    ],
+    "primary": {
+      "type": "button",
+      "label": "Install",
+      "href": "/getting-started/install"
+    }
   },
   "navigation": {
     "groups": [
@@ -22,12 +40,15 @@
       {
         "group": "Getting started",
         "pages": [
-          "getting-started/install"
+          "getting-started/install",
+          "getting-started/first-run",
+          "getting-started/connect-a-model"
         ]
       },
       {
         "group": "Using Mochiii",
         "pages": [
+          "using/vscode",
           "using/terminal-commands",
           "using/plan-and-spec",
           "using/approvals",
@@ -38,6 +59,12 @@
         "group": "MCP",
         "pages": [
           "mcp/add-a-server"
+        ]
+      },
+      {
+        "group": "Help",
+        "pages": [
+          "troubleshooting"
         ]
       },
       {

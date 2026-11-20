@@ -1,0 +1,68 @@
+---
+title: "VS Code"
+description: "Install the Mochiii extension, chat in the panel, choose a mode, attach files, add MCP servers and manage keys in VS Code."
+---
+
+## Install
+
+Install **Mochiii** from the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=MochiiiAIAgent.mochiii-vscode), or from a terminal:
+
+```bash
+code --install-extension MochiiiAIAgent.mochiii-vscode
+```
+
+The extension runs on Linux x64 and Windows x64. On other systems, use the [terminal app](/getting-started/install).
+
+<Warning>
+  If you also use the terminal app, keep both on the same version. See [Troubleshooting](/troubleshooting#i-updated-one-client-and-chats-stopped-saving).
+</Warning>
+
+## Start a chat
+
+Click the lotus icon in the Activity Bar, paste an API key when asked, and start asking. To use a model on your computer instead, see [Connect a model](/getting-started/connect-a-model).
+
+If no key is connected yet, a question is not sent: the panel says so and why, with **Connect a key**, and sends the question once a key works.
+
+The VS Code panel has its own chat, its own saved chats and its own search, separate from the terminal app's. Your code index, saved rules and spending limits are shared with the terminal app, because they belong to the project. VS Code windows open on the same folder share one chat.
+
+Type `/` to see the commands. One Enter runs the command you pick. A `/command` the panel does not know is not sent to the model. Some commands are in the terminal app only for now.
+
+## Modes
+
+Each chat has a mode. Change it from the button beside the model.
+
+| Mode | What it does |
+|---|---|
+| **auto** | Edits apply as they arrive, each still gated and undoable. A new chat starts in this mode. |
+| **manual** | Every edit waits for your Apply. |
+| **plan** | Reads your code and writes a plan; proposes no edits. |
+
+The `mochiii.defaultMode` setting chooses the mode a new chat starts in.
+
+An agent task in VS Code has up to 24 steps.
+
+## Attach files
+
+Attach PDFs (scanned ones too), Word, Excel, PowerPoint and images to a question. They are read on your machine.
+
+## MCP servers and the Marketplace
+
+Type `/mcp` in the chat to see your MCP servers, with **Add a server…** and **Browse the marketplace**. Before the Marketplace opens the first time, Mochiii explains that a server you add runs on your machine with your full privileges, and that it shows you exactly what will run and asks you to type the server's name before anything is added.
+
+The Marketplace lists **Verified** servers, official ones Mochiii chose, and **Community** servers from the public MCP Registry, which have not been reviewed. A card says **Needs uv** or **Needs Docker** for a server that launches with them, and shows the exact command it runs. `/mcp-server add` opens the form for adding a server of your own.
+
+On the [website's MCP Marketplace](https://www.mochiii.in/mcp), **Open in VS Code** opens that server in the extension's Marketplace, where you add it.
+
+A key a server needs is typed into the `/mcp` key form, which keeps it in the form: a click elsewhere does not move it to the chat box.
+
+## Keys
+
+The provider key is kept in VS Code's secret storage, not in `settings.json`. Type `/connect` to change it. **Forget key** asks before it removes the key.
+
+## A model on your computer
+
+Set `mochiii.apiBase` to the server's address (for Ollama, `http://localhost:11434/v1`) and `mochiii.model` to the model's name. Checking what a local model can do (`/agent check`) and the compact agent need the terminal app, which reads the model's context window from the server.
+
+## When an answer does not arrive
+
+A turn that hears nothing from Mochiii's background service for 10 minutes (35 while a tool runs; time waiting for your approval does not count) ends with **No answer arrived** and **Try again**.

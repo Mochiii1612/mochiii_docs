@@ -1,24 +1,24 @@
 # Proposed sitemap
 
-Describes Mochiii **1.5.0** (tag v1.5.0, commit 6cc75c3, and the 1.5.0 npm packages).
+Describes Mochiii **1.6.0** (codeterminal-core main b3e0e3d, the 1.6.0 npm packages, and the 1.6.0 VS Code extension).
 Pages marked **written** are on the site. The rest are proposals.
 
-Paths are relative to `Rav-2007/codeterminal-core` at v1.5.0. The structure is
+Paths are relative to `Rav-2007/codeterminal-core` at 1.6.0. The structure is
 Cline-style in shape only: a hub, task-based sections, one job per page.
 
-Changes from the requested outline, where the 1.5.0 source says a topic does not
+Changes from the requested outline, where the source says a topic does not
 exist as named:
 
 - **"check mode" does not exist.** The modes are `plan` (terminal `/plan`, and the
-  VS Code `plan` mode, `clients/vscode/package.json:109-122`) and, in VS Code,
-  `auto` and `manual`. `check` appears only as `/spec check` (`clients/tui/slash.go:97`).
+  VS Code `plan` mode, `clients/vscode/package.json:108-121`) and, in VS Code,
+  `auto` and `manual`. `check` appears only as `/spec check` (`clients/tui/slash.go:104`).
   The page is "Plan mode and specs".
-- **"The verified servers" is not in the 1.5.0 source.** The list is served live by
+- **"The verified servers" is not in the core source.** The list is served live by
   the website (`DEFAULT_CATALOG_URL`, `clients/vscode/src/mcpCatalog.ts:26`) and
   is the website repo's data, so it can change without a release. That page needs
   the live catalog read when it is written, and a date on it.
 - **The terminal app has no marketplace.** The Marketplace is a VS Code feature
-  at 1.5.0 (`clients/vscode/src/mcpMarketplace.ts`). The MCP pages say which client
+  at 1.6.0 (`clients/vscode/src/mcpMarketplace.ts`). The MCP pages say which client
   each step is for.
 
 ## Introduction
@@ -32,9 +32,9 @@ exist as named:
 | Page | Purpose | Status | Source files to check |
 |---|---|---|---|
 | `getting-started/install` Install with npm | Install, start, update, remove, by npm | **written** | `npm/build.js`, `npm/mochiii/*`, `clients/tui/main.go`, `clients/tui/firstrun.go` |
-| `getting-started/install-script` Install with the curl and PowerShell installers | Install without Node | proposed | `install/install.sh`, `install/install.ps1`, `docs/REFERENCE.md` (Install section, as a lead only) |
-| `getting-started/first-run` First run | What happens the first time in a folder: model download, index offer | proposed | `clients/tui/firstrun.go`, `clients/tui/launch.go`, `daemon/embedderstamp.go` |
-| `getting-started/connect-a-model` Connect a model | Your own key, or a local model server | proposed | `clients/tui/connect.go`, `clients/tui/connectchosen.go`, `clients/tui/localmodels.go`, `models.json` |
+| `getting-started/install-script` Install with the curl and PowerShell installers | Install without Node | dropped: the install page covers npm and VS Code only | `install/install.sh`, `install/install.ps1`, `docs/REFERENCE.md` (Install section, as a lead only) |
+| `getting-started/first-run` First run | What happens the first time in a folder: model download, index offer | **written** | `clients/tui/firstrun.go`, `clients/tui/launch.go`, `daemon/embedderstamp.go` |
+| `getting-started/connect-a-model` Connect a model | Your own key, or a local model server | **written** | `clients/tui/connect.go`, `clients/tui/connectchosen.go`, `clients/tui/localmodels.go`, `models.json` |
 | `getting-started/first-task` Your first task | Ask a question, review an edit | proposed | `clients/tui/chat.go`, `clients/tui/approvalview.go`, `daemon/editapply` |
 
 ## Using Mochiii
@@ -42,7 +42,7 @@ exist as named:
 | Page | Purpose | Status | Source files to check |
 |---|---|---|---|
 | `using/terminal-commands` Terminal commands | `/` commands and keys | **written** | `clients/tui/slash.go`, `clients/tui/chat.go`, `clients/tui/slashpopup.go` |
-| `using/vscode` VS Code | Install, open the chat, what differs from the terminal | proposed | `clients/vscode/package.json`, `clients/vscode/src/extension.ts`, `clients/vscode/README.md` |
+| `using/vscode` VS Code | Install, chat, modes, attachments, Marketplace, keys | **written** | `clients/vscode/package.json`, `clients/vscode/src/extension.ts`, `clients/vscode/README.md` |
 | `using/plan-and-spec` Plan and spec | `/plan`, and `/spec`, `/spec build`, `/spec check` | **written** | `clients/tui/slash.go`, `daemon/spec*.go`, `docs/SPEC_WORKFLOW.md` (lead only) |
 | `using/approvals` Approvals | What you are asked, what the labels in the prompt mean | **written** | `clients/tui/chat.go` (approval risks, around line 2800), `clients/tui/approvalview.go`, `daemon/*classif*`, `models.agent.json` |
 | `using/saved-sessions` Saved sessions | `/save`, `/resume`, `/history` | **written** | `clients/tui/slash.go`, `clients/tui/history.go`, `clients/tui/rules.go`, `daemon/chatarchive.go` |
@@ -72,6 +72,12 @@ exist as named:
 | `troubleshooting/install` Install problems | `command not found`, missing platform package, no code search | proposed | `npm/mochiii/platform.js`, `daemon/programrole.go`, `install/install.sh` |
 | `troubleshooting/mcp` MCP problems | A server did not start, a key is missing | proposed | `daemon/mcpstatus.go`, `daemon/mcp_handler.go`, `daemon/mcpenv.go` |
 | `troubleshooting/connection` Connection and key problems | A refused key, the service not answering | proposed | `clients/tui/connect.go`, `clients/tui/daemonconn.go` |
+
+## Help
+
+| Page | Purpose | Status | Source files to check |
+|---|---|---|---|
+| `troubleshooting` Troubleshooting | Chats that stop saving after one client updates, code search off, MCP and model problems, logs | **written** | `docs/RELEASE_NOTES.md` (1.6.0), `README.md` |
 
 ## Releases and licence
 

@@ -1,0 +1,50 @@
+---
+title: "First run"
+description: "What the Mochiii terminal app asks the first time you start it in a folder, and what a new launch starts with."
+---
+
+Start Mochiii inside a project folder:
+
+```bash
+cd path/to/your/project
+mochiii
+```
+
+Mochiii works on the folder it starts in. Started in your home folder, or at the top of a drive, it says so and suggests starting it inside a project folder instead. It still runs.
+
+## Code search for this folder
+
+The first time Mochiii runs in a folder, it offers to download its code-search model, once for your computer, and to index the folder, so answers are grounded in your code:
+
+```text
+Mochiii can index this folder so it finds the right code for your questions.
+It runs on this computer and takes a minute or two for most projects.
+Index /path/to/your/project now? [Y/n/never]
+```
+
+- `Y`, or Enter, builds the index.
+- `n` skips it. Mochiii asks again next time.
+- `never` skips it, and Mochiii stops asking for that folder.
+
+| Command | Effect |
+|---|---|
+| `mochiii --index` | Index the folder again, then open the chat |
+| `mochiii --no-index` | Skip the offer |
+| `MOCHIII_NO_INDEX=1 mochiii` | The same as `--no-index`, set as an environment variable |
+
+If the download of the code-search model failed during an install, see [Troubleshooting](/troubleshooting#code-search-is-off).
+
+## Choose a provider and a model
+
+With no key yet, Mochiii opens on its setup, `connect a model provider to get started`: choose a provider, paste its key, and choose a model. The list starts with **Any key**, where the provider is told from the key itself, and **On this computer**, for a model server on your own machine. `Esc` skips to the chat; a key is then asked for when you send your first question.
+
+You can run the same steps at any time with `/provider`. See [Connect a model](/getting-started/connect-a-model).
+
+## Each launch starts a new chat
+
+Every time you start the terminal app, it opens an empty chat. Your earlier chats are kept only if you saved them:
+
+- `/save` keeps the chat on screen, and `/resume` reopens a saved one.
+- Quitting a chat you have not saved asks first: `This chat is not saved and will be erased. Save or quit?`
+
+Each terminal window has its own chat, and the VS Code extension has its own too. See [Saved sessions](/using/saved-sessions).
