@@ -1,7 +1,7 @@
 # Mochiii documentation
 
 Source of the Mochiii documentation site, built with [Mintlify](https://mintlify.com).
-The site describes Mochiii **1.5.0**.
+The site describes Mochiii **1.6.0**.
 
 ## Layout
 

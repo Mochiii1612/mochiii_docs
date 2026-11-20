@@ -1,20 +1,24 @@
 ---
 title: "Mochiii documentation"
-description: "What Mochiii is, and where to start. These pages describe version 1.5.0."
+description: "An AI coding agent that knows your codebase, in VS Code and in your terminal. These pages describe version 1.6.0."
 ---
 
-Mochiii is a terminal coding assistant that works on the project folder you start it in.
+Mochiii is an AI coding agent that knows your codebase, in VS Code and in your terminal. It reads your project, answers questions about it, writes and fixes code, runs your tests, and works through long tasks.
 
-It comes as a terminal app, and as a VS Code extension. These pages describe the terminal app, version 1.5.0.
+These pages describe version 1.6.0, of both the terminal app and the VS Code extension.
+
+<Note>
+  Mochiii is in beta. It works and is used daily, but some features and docs are still being finished. Expect changes between versions. Please report bugs to supportmochiii@gmail.com.
+</Note>
 
 ## What you need to use it
 
-- **A model.** Mochiii asks a language model to answer. You give it an API key from a model provider, or you point it at a model server running on your own computer.
+- **A model.** Mochiii asks a language model to answer. You give it an API key from a model provider, or you point it at a model server running on your own computer. See [Connect a model](/getting-started/connect-a-model).
 - **A project folder.** Mochiii works on the folder it starts in. Start it inside a project, not in your home folder.
 
 ## Code search
 
-Mochiii can build a search index of a project folder, so it can find the code that relates to your question. On first run in a folder it asks whether to build one. The index is made on your computer, and is kept in the `.mochiii/index` folder inside the project.
+Mochiii indexes your project on your machine and finds the code that matters for each question. The index updates as you save, so answers match the code you have now. On first run in a folder, the terminal app asks whether to build the index. The index is kept in the `.mochiii/index` folder inside the project.
 
 ## MCP servers
 
@@ -22,10 +26,17 @@ You can add MCP servers to give Mochiii more tools. See [Add an MCP server](/mcp
 
 ## Where to start
 
-<Card title="Install Mochiii" icon="download" href="/getting-started/install">
-  Install the terminal app with npm and start it in a project.
-</Card>
-
-<Note>
-  This documentation is being written in stages. Only a few pages exist so far.
-</Note>
+<CardGroup cols={2}>
+  <Card title="Install Mochiii" icon="download" href="/getting-started/install">
+    The VS Code extension from the Marketplace, or the terminal app with npm.
+  </Card>
+  <Card title="First run" icon="play" href="/getting-started/first-run">
+    What happens the first time you start Mochiii in a folder.
+  </Card>
+  <Card title="Connect a model" icon="plug" href="/getting-started/connect-a-model">
+    A provider key, or a model server on your computer.
+  </Card>
+  <Card title="VS Code" icon="code" href="/using/vscode">
+    The chat panel, its modes, attachments and the MCP Marketplace.
+  </Card>
+</CardGroup>

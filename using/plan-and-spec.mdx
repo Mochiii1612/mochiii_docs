@@ -13,7 +13,7 @@ Type `/plan`, then what you want to do:
 
 The model reads the project and writes a plan. In this turn it has only five tools: `read_file`, `list_directory`, `grep`, `find_files` and `repo_map`. It has no tool that runs a command, edits or deletes a file, or reaches the internet, and no tools from your MCP servers.
 
-If the model writes an edit into its answer anyway, Mochiii still shows it to you for review, as in any other turn: `y apply · n skip · q cancel remaining`. Press `n` to skip it. The file changes only if you press `y`.
+A `/plan` turn offers no edits. If the model writes one into its answer anyway, Mochiii does not offer it for review, and says that the daemon withheld it.
 
 To carry out the plan, ask again without `/plan`.
 
