@@ -1,6 +1,6 @@
 ---
 title: "Settings and file locations"
-description: "The settings you can change in Mochiii 1.5.0, and the files and folders it creates."
+description: "The settings you can change in Mochiii 1.6.0, and the files and folders it creates."
 ---
 
 <Note>
@@ -19,7 +19,7 @@ description: "The settings you can change in Mochiii 1.5.0, and the files and fo
 | Indexing this folder | Answer `never` when Mochiii offers to index the folder. Kept in `no-index` |
 | Active spec | `/spec use <file>`, `/spec off`. Kept in `active-spec-<project>` |
 | Rules for this project | `/remember <text>`, `/forget <number>`. Kept in `rules/<project>.md` |
-| MCP servers | `/mcp-server`. See [Add an MCP server](/mcp/add-a-server). Kept in `~/.mochiii/` |
+| MCP servers | `/mcp` or `/mcp-server`. See [Add an MCP server](/mcp/add-a-server). Kept in `~/.mochiii/` |
 
 A file named without a folder is in the state folder, `~/.local/state/mochiii/`, described below.
 
@@ -61,8 +61,8 @@ Each of these is created the first time it is needed.
 
 | Path | What it holds |
 |---|---|
-| `memory.db` | The turns of each project's current chat |
-| `history/<project>/` | Saved chats. See [Saved sessions](/using/saved-sessions) |
+| `memory.db` | The turns of each current chat: one for the VS Code panel, and one for each terminal window, per project. Every project on the computer shares this file, so update the terminal app and the VS Code extension together ([Troubleshooting](/troubleshooting#i-updated-one-client-and-chats-stopped-saving)) |
+| `history/<project>/terminal/`, `history/<project>/vscode/` | Saved chats, a folder for each client. See [Saved sessions](/using/saved-sessions) |
 | `rules/<project>.md` | The rules you saved with `/remember`. You can edit this file |
 | `active-spec-<project>` | The path of the active spec |
 | `local-models.json` | The `/agent` and `/web` settings |

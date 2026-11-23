@@ -47,7 +47,11 @@ The arguments are shown in full. A line under the question can warn you, for exa
 - `THE AGENT WROTE THIS ADDRESS ITSELF: you did not type it and no search returned it …`, for a web call
 - `marked destructive`
 
-A tool from an MCP server is named with its server, as `server/tool`. An MCP server can describe its tools with hints. Mochiii shows `marked destructive` for a tool the server gives hints for, unless the server says the tool is not destructive. A tool with no hints is not marked, and neither is one whose server says it is not destructive. A tool the server marks only as read-only is still `marked destructive`.
+A tool from an MCP server is named with its server, as `server/tool`, for example `Allow cloudflare/search_cloudflare_documentation`. An MCP server can describe its tools with hints. Mochiii shows `marked destructive` for a tool the server gives hints for, unless the server says the tool is not destructive. A tool with no hints is not marked, and neither is one that declares itself read-only.
+
+## Secrets in a tool call
+
+A secret the model writes into a third-party tool's arguments is redacted before you are asked about the call and before it is sent: a recognisable key format, or a value whose name says it is a secret (`password`, `DB_PASSWORD=`). A call that carries one of the keys Mochiii itself holds (your provider key, an MCP server's key, your GitHub token), in any common encoding, is refused outright, and you are not asked. A tool that needs a key gets it from the key you stored for its server.
 
 ## Your answer
 
@@ -61,7 +65,7 @@ The keys are shown under the question: `y yes · a yes for this turn · n no`.
 | `n` | Does not run it. The model is told you declined |
 | `Esc` | Does not run it, and stops the turn |
 
-Other keys do nothing while a question is waiting.
+Typed text never answers a question: a letter answers only when it is typed on its own, after the question has been on screen for half a second. The same goes for the edit review.
 
 If the question is longer than the screen, the key line reads `↓ PgDn to read on · 38 more line(s) before yes · n no · esc stop`, and `y` does nothing until you have paged to the end.
 
