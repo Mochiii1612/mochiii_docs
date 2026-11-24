@@ -1,92 +1,80 @@
 ---
-title: "Approvals"
-description: "What the Mochiii terminal app asks before a tool runs or a file changes, what each answer does, and how long it lasts."
+title: "Approvals and permissions"
+description: "What Mochiii asks before a tool runs or a file changes, in VS Code and the terminal app, and what each answer covers."
 ---
+
+Before a tool call that is not allowed outright, Mochiii stops and asks you, showing exactly what will run; your answer covers that call, the rest of the task, or nothing.
+
+*Describes terminal app 1.6.1 and VS Code extension 1.0.1, which works with terminal app 1.6.1 or later.*
 
 ## What asks first
 
-Each tool the model can use has a policy. `allow` runs without asking you. `ask` asks you first. `/mcp-server` lists every tool with its policy.
+Each tool has a policy: `allow` runs without asking, `ask` asks you first, `deny` never offers it. A tool from an MCP server asks, and so does any tool with no policy listed. Running a terminal command (`run_command`), deleting, moving and restoring files always ask. See [Built-in tools](/reference/built-in-tools) for every tool's policy.
 
-Every tool from an MCP server you added has the policy `ask`.
+In VS Code, **Auto** answers these questions for you inside the project, and **Manual** leaves them all to you: see [Modes](/using/modes). In the terminal app, **auto-approve** (`Ctrl+Space`) answers them for you.
 
-### Built-in tools that run without asking
+## In VS Code
 
-When Mochiii's background service starts, it writes this list to its log. These built-in tools run without asking you:
+![An approval card in Manual: "Run in this turn's working copy (in .): npm test ?", a "NOT SANDBOXED" warning, and Deny, Allow for this task, Allow and Stop task](/images/screens/vscode-approval-card.webp)
 
-| When the model has them | Tools |
+| Button | What it does |
 |---|---|
-| Every turn | `read_file`, `list_directory`, `grep`, `find_files`, `repo_map` |
-| When the project has a search index | `search_code` |
-| In a long task | `investigate`, `update_tasks`, `record_finding`, `checkpoint`, `finish_task` |
-| In `/spec check` | `record_criterion` |
+| **Deny** | Does not run it; the model is told you declined. It has the focus, and `Esc` presses it |
+| **Allow for this task** | Runs this call, and the same call again for the rest of the task; a different command still asks |
+| **Allow while this spec is active** | Runs this exact command now and again while the active spec stays on. Offered only for a build or test command with a spec active |
+| **Allow** | Runs this call with these exact arguments |
+| **Stop task** | Denies the call and abandons the whole task |
 
-A long task is one started with `/task`, `/fix`, `/debug`, `/refactor` or `/hunt`.
+No single key allows: text typed into the composer never approves anything. In Auto, a question Auto leaves to you carries one line saying why, for example "Auto asks first: this can send something out of this computer."
 
-`read_file` still asks before it reads a file outside the project.
+## In the terminal app
 
-Three more built-in tools can reach the internet: `web_fetch`, `web_search` and `github`. Their policy is `allow`, but the log says they run without asking only when the call cannot carry what the model has read: a search made before the turn has read anything, or a fetch of an address you typed or a search returned. Any other search or fetch asks first. For example, a fetch of an address you typed in your question runs without asking, and a fetch of an address the model wrote itself asks.
-
-## The question
-
-The question is one line, saying what will happen. For example:
-
-| The call | The question |
-|---|---|
-| A build or test command | `Run command: make --version ?` |
-| A shell command | `Run in this turn's working copy: ls ?` |
-| An edit | `Allow propose_edit: {"path": "main.go", "search": …, "replace": …} ?` |
-| A file outside the project | `Read outside this project: <path> ?` |
-| A web page | `Open web page: <address> ?` |
-| Deleting a file | `Delete new.txt (moved to Mochiii's trash, where it can be restored) ?` |
-| A tool from an MCP server | `Allow probe/plain: {"text": "first"} ?` |
-
-The arguments are shown in full. A line under the question can warn you, for example:
-
-- `NOT SANDBOXED: a separate program with your full access`, for a shell command or a tool from an MCP server
-- `LEAVES YOUR MACHINE: sent to a third party over the internet`, for a web call
-- `THE AGENT WROTE THIS ADDRESS ITSELF: you did not type it and no search returned it …`, for a web call
-- `marked destructive`
-
-A tool from an MCP server is named with its server, as `server/tool`, for example `Allow cloudflare/search_cloudflare_documentation`. An MCP server can describe its tools with hints. Mochiii shows `marked destructive` for a tool the server gives hints for, unless the server says the tool is not destructive. A tool with no hints is not marked, and neither is one that declares itself read-only.
-
-## Secrets in a tool call
-
-A secret the model writes into a third-party tool's arguments is redacted before you are asked about the call and before it is sent: a recognisable key format, or a value whose name says it is a secret (`password`, `DB_PASSWORD=`). A call that carries one of the keys Mochiii itself holds (your provider key, an MCP server's key, your GitHub token), in any common encoding, is refused outright, and you are not asked. A tool that needs a key gets it from the key you stored for its server.
-
-## Your answer
-
-The keys are shown under the question: `y yes · a yes for this turn · n no`.
+![The terminal app asking "Run in this turn's working copy (in .): npm test ?" with "NOT SANDBOXED: a separate program with your full access" and "y yes · a yes for this turn · n no"](/images/screens/terminal-approval.webp)
 
 | Key | What it does |
 |---|---|
 | `y` | Runs this call |
-| `a` | Runs this call, and lets the same tool run without asking for the rest of this turn, within the limits below |
-| `s` | Runs this command, and the same command again while the active spec stays active. Shown only when a spec is active and the call is a build or test command |
+| `a` | Runs it, and lets the same call run without asking for the rest of the turn (in a long task, the whole task) |
+| `s` | Runs this build or test command, and the same command again while the active spec stays active. Shown only then |
 | `n` | Does not run it. The model is told you declined |
 | `Esc` | Does not run it, and stops the turn |
 
-Typed text never answers a question: a letter answers only when it is typed on its own, after the question has been on screen for half a second. The same goes for the edit review.
+A letter answers only when it is typed on its own, after the question has been on screen for half a second, so typed text never answers a question. If the question is longer than the screen, `y` does nothing until you have paged to the end.
 
-If the question is longer than the screen, the key line reads `↓ PgDn to read on · 38 more line(s) before yes · n no · esc stop`, and `y` does nothing until you have paged to the end.
+After you answer, a line stays in the chat, for example `✓ approved builtin__run_command`.
 
-After you answer, a line stays in the chat, for example:
+## The question
 
-- `✓ approved builtin__run_command`
-- `✓ approved builtin__read_file for the rest of this task`
-- `✓ approved builtin__sandbox_exec for this exact command while this spec is active`
-- `✗ denied probe__safe`
+The question says what will happen, with the arguments in full. A line under it can warn you:
+
+- `NOT SANDBOXED: a separate program with your full access`, for a shell command or a tool from an MCP server
+- `marked destructive`, for an MCP tool the server gives hints for, unless the server says it is not destructive or declares it read-only
+- `RUNS IN YOUR REAL PROJECT`, for a command that would run in the project itself because no separate working copy could be made
+
+A tool from an MCP server is named with its server, for example `Allow cloudflare/search_cloudflare_documentation`.
+
+A question waits for your answer for as long as you take; that time is not counted against the turn. Closing the terminal or the panel ends it at once, as a no.
 
 ## How long a yes lasts
 
-- **`y`** covers this call.
-- **`a`** lasts until the turn ends. In a long task the whole task is one turn, and the key reads `a yes for this whole task`. What it covers depends on the tool:
-  - a shell command, a web call, or a tool marked destructive: only the same arguments again. `a` for `ls` does not cover `pwd`.
-  - a file outside the project: only that path.
-  - any other tool, such as an MCP tool with no hints: every later call to it in the turn.
-- **`s`** lasts across turns while the same spec stays active. `/spec show` lists what you approved this way. It ends when you type `/spec off`, choose another spec, or quit.
+- **Allow / `y`** covers this call.
+- **Allow for this task / `a`** lasts until the task or turn ends, and is never written to disk. For a command, a web call or a tool marked destructive it covers only the same arguments again; for a file outside the project, only that path; for any other tool, every later call to it.
+- **Allow while this spec is active / `s`** lasts across turns while the same spec stays active. It ends when you type `/spec off`, choose another spec, or quit.
 
-## Edits and deletes
+## Secrets in a tool call
 
-An edit the model proposes asks first, with `Allow propose_edit: … ?`. At the end of the turn, Mochiii shows each edit as a diff, with `y apply · n skip · q cancel remaining`. The file changes only when you press `y`, and Mochiii keeps a copy of it from before and after in `.mochiii/backups/`.
+A secret the model writes into a third-party tool's arguments is redacted before you are asked and before it is sent: a recognisable key format, or a value whose name says it is a secret (`password`, `DB_PASSWORD=`). A call that carries one of the keys Mochiii itself holds (your provider key, an MCP server's key, your GitHub token) is refused outright.
 
-A delete happens when you answer yes to it. The file is moved to `.mochiii/trash/` in the project.
+## Edits
+
+An edit passes five checks before it is written: the path stays inside the project and is not a secret file; the text to replace matches exactly one place; a Go file still parses (other languages are checked for balance only); you confirm it (or Auto, or auto-approve, does); and a copy is backed up. In the terminal app, each edit is shown as a diff: `y` applies it, `n` skips it, `q` cancels the rest.
+
+![An edit in review in the terminal app: the model's diff of src/pricing.js adds a VIP30 code and also drops the file's first comment line, with "syntax check: delimiters balanced" and "y apply · n skip · q cancel remaining" under it](/images/screens/terminal-edit-review.webp)
+
+The review is where you catch what the model did that you did not ask for, like the dropped comment above.
+
+See [Undo and backups](/using/undo-and-backups).
+
+## Every decision is recorded
+
+Each decision, including calls that ran without asking, is appended to `.mochiii/logs/toolcalls.jsonl` in the project. It records a SHA-256 of the arguments and their length, not the arguments themselves. Auto's and auto-approve's answers are recorded as `auto_approve`, not as yours.

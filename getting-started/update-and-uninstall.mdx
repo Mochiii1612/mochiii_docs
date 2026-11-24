@@ -1,0 +1,49 @@
+---
+title: "Update and uninstall"
+description: "Update the terminal app and the VS Code extension in the right order, and remove them."
+---
+
+Update the terminal app with npm first, then the VS Code extension, because the first new version to open Mochiii's chat memory upgrades it.
+
+*Describes terminal app 1.6.1 and VS Code extension 1.0.1, which works with terminal app 1.6.1 or later.*
+
+## Update
+
+<Steps>
+  <Step title="Update the terminal app">
+    ```bash
+    npm install -g mochiii@latest
+    ```
+  </Step>
+  <Step title="Restart its background service">
+    In each folder you use the terminal app in:
+
+    ```bash
+    mochiii -stop
+    ```
+  </Step>
+  <Step title="Update the extension and reload VS Code">
+    Update **Mochiii** in VS Code's Extensions view, then reload the window.
+  </Step>
+</Steps>
+
+<Warning>
+  VS Code extension 1.0.1 works with terminal app 1.6.1 or later. Mochiii keeps chat memory in one file for every folder on the machine. The first new version to open it upgrades it in place, and an older version cannot use the upgraded file: it stops saving chat turns, or runs without chat memory. There is no automatic way back. See [Troubleshooting](/troubleshooting#i-updated-one-client-and-chats-stopped-saving).
+</Warning>
+
+## A .vsix installed by hand
+
+Installed a Mochiii `.vsix` by hand? Uninstall it before installing from the Marketplace. VS Code will not replace a build numbered 1.1.0 to 1.6.1 with 1.0.1.
+
+## Uninstall
+
+**The terminal app.** Stop the background service in each project folder you used, then remove the package:
+
+```bash
+mochiii --stop
+npm uninstall -g mochiii
+```
+
+**The VS Code extension.** Uninstall **Mochiii** from VS Code's Extensions view.
+
+Your keys, code-search models and MCP servers are in `~/.mochiii/`, and chats, rules, tasks and logs are in the state folder. Delete those folders to remove them too. See [File locations](/reference/file-locations).

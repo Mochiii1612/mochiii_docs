@@ -1,0 +1,46 @@
+---
+title: "How indexing works"
+description: "How Mochiii indexes your project on your computer, keeps the index current, and finds the code for each question."
+---
+
+Mochiii indexes your project on your computer and searches that index for the code that matters to each question; the index follows your saves.
+
+*Describes terminal app 1.6.1 and VS Code extension 1.0.1, which works with terminal app 1.6.1 or later.*
+
+## Build the index
+
+| Client | How |
+|---|---|
+| Terminal app | The first run in a folder offers it. Later: `mochiii --index` |
+| VS Code | Mochiii asks once per folder. Later: **Mochiii: Index Folder for Code Search** |
+
+The first index also downloads the code-search model, once for your computer, into `~/.mochiii/models/`. The index is kept in `.mochiii/index/` inside the project.
+
+## What is indexed
+
+Your files are cut into overlapping windows of about 40 lines, and each is turned into a vector by a small embedding model (BGE small, run on your computer) and also stored for exact-word search.
+
+**Never indexed:** anything that could hold a secret (`.env*`, `*.pem`, `*.key`, `id_rsa*`, `.aws/`, `.ssh/`, any name containing "secret" or "credential"), plus `.git/`, `node_modules/`, `vendor/`, build output, binaries, files over 1 MB, and anything a `.gitignore` excludes.
+
+## How a question finds code
+
+Each search runs two ways at once, by meaning and by exact words, and merges the two rankings, so both "the thing that means this" and the exact name you typed can come first. Code ranks a little above config and docs.
+
+- **With tools** (agent mode), the model searches with `search_code` when it needs code. Only `file:line` references in your question are attached up front.
+- **Without tools,** your question is searched before the model starts, and the code found goes with it.
+
+## Keeping it current
+
+While Mochiii runs, it re-indexes a file about a second after you save, create, delete or rename it. Changes made while it was stopped, such as a branch switch or a pull, are not seen: run `mochiii --index` (or **Index Folder for Code Search**) after them.
+
+<Warning>
+  A stale index is not detected: an answer can describe the old shape of a file that changed while Mochiii was stopped.
+</Warning>
+
+## Without an index
+
+Mochiii still works. With tools, the agent reads and searches files itself; without tools, the model sees only what you attach and the file you have open.
+
+## Requirements
+
+Code search needs glibc 2.27 or newer on Linux, and the Microsoft Visual C++ runtime on Windows. It is not available on Intel Macs. See [Troubleshooting](/troubleshooting#code-search-is-off).

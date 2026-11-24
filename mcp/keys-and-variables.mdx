@@ -1,0 +1,45 @@
+---
+title: "Keys and variables"
+description: "How an MCP server gets the key or setting it reads from an environment variable, and where Mochiii keeps it."
+---
+
+A server that reads a key from an environment variable gets it from a value you give Mochiii in a hidden box, kept only for that server and never shown to the model.
+
+*Describes terminal app 1.6.1 and VS Code extension 1.0.1, which works with terminal app 1.6.1 or later.*
+
+## Give a key when you add the server
+
+- **In VS Code,** list the server's variables under **Variables it reads** in the add form, or let the Marketplace card's `required` keys be asked for. A value is kept for this server only, in a file only you can read. Leave it empty to pass the variable from Mochiii's environment.
+- **In the terminal app,** name the variable with `--env`:
+
+  ```text
+  /mcp-server add github --env GITHUB_TOKEN npx -y @modelcontextprotocol/server-github
+  ```
+
+  `--env` takes the variable's **name**. Mochiii asks for the value right after the add, in a hidden prompt. Enter skips it; the server is still added, and its line in `/mcp-server` says what it needs.
+
+A key pasted in a server's JSON is moved into the secrets file and never shown: not on the panel, in the chat, in the log, or in the up-arrow history. An empty value or a placeholder such as `YOUR_API_KEY` is asked for when the server is added.
+
+<Warning>
+  Never write a key into the command line. Mochiii refuses `--env GITHUB_TOKEN=abc`, `GITHUB_TOKEN=abc npx …`, and a key written into the server's own arguments, such as `--api-key …` or `--token=…`, because the command is stored and shown.
+</Warning>
+
+## Change a key later
+
+In the terminal app:
+
+```text
+/mcp-server key github GITHUB_TOKEN
+```
+
+Mochiii asks for the value in a hidden prompt; `Esc` cancels. The server uses it from its next start. The variable must be one the server was added with; to add another, remove the server and add it again. In VS Code, use **Set key** on the server (`/mcp` in the chat, or **Mochiii: Set Key for MCP Server…**).
+
+## Where the value comes from
+
+When a server starts, it uses the value you stored. If there is none, it uses the variable from the environment Mochiii's background service started with: run `mochiii --stop`, export the variable, then start Mochiii. A service that is already running does not see a variable you export after it started. Mochiii does not read `.env` files.
+
+Keys are kept in `~/.mochiii/mcp-secrets.json`, readable only by you, and removed with the server.
+
+## Secrets in tool calls
+
+A secret the model writes into a third-party tool's arguments is redacted before you are asked about the call and before it is sent. A call that carries one of Mochiii's own keys (your provider key, an MCP server's key, your GitHub token) is refused. A tool that needs a key gets it from the key stored for its server.

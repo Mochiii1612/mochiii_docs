@@ -1,0 +1,66 @@
+---
+title: "File locations"
+description: "Where Mochiii keeps its program, keys, chats, rules, logs and indexes, on Linux, macOS and Windows."
+---
+
+Mochiii keeps keys and models in `~/.mochiii/`, chats, rules and logs in a state folder, and a project's index, backups and audit log in the project's `.mochiii/` folder.
+
+*Describes terminal app 1.6.1 and VS Code extension 1.0.1, which works with terminal app 1.6.1 or later.*
+
+## The folders
+
+| | Linux and macOS | Windows |
+|---|---|---|
+| Keys, models, MCP servers | `~/.mochiii/` | `%USERPROFILE%\.mochiii\` |
+| Chats, rules, tasks, logs (the state folder) | `$XDG_STATE_HOME/mochiii`, or `~/.local/state/mochiii` | `%LOCALAPPDATA%\mochiii` |
+| A project's index, backups and audit log | `<project>/.mochiii/` | the same |
+
+## In ~/.mochiii/
+
+| Path | What it holds |
+|---|---|
+| `credentials.json` | The provider key you gave, the address it is for, and the model you chose. Readable only by you |
+| `github.json` | The GitHub token from `/github connect` |
+| `mcp-servers.json` | The MCP servers you added |
+| `mcp-secrets.json` | Keys you gave MCP servers |
+| `mcp-approvals.json` | Servers you approved from a project's `.mcp.json` |
+| `models/` | The code-search model and its engine, downloaded once for the computer |
+| `trash/` | Files the agent deleted from your home folder, so they can be restored |
+
+In VS Code, the provider key is kept in VS Code's own secret storage instead.
+
+## In the state folder
+
+| Path | What it holds |
+|---|---|
+| `memory.db` | The current chat of each client and terminal window, for every project. Shared by the terminal app and the extension, which is why they must be updated together |
+| `history/<project>/terminal/`, `history/<project>/vscode/` | Saved chats. See [History](/using/history) |
+| `rules/<project>.md` | The rules you saved with `/remember`. You can edit it |
+| `tasks/<project>/` | Long tasks, for `/task resume` |
+| `local-models.json` | The `/agent` and `/web` settings, and each local model's check |
+| `logs/` | The background service's logs |
+
+`<project>` is a short code Mochiii makes from the project folder's path.
+
+## In the project's .mochiii/
+
+| Path | What it holds |
+|---|---|
+| `index/` | The code-search index |
+| `backups/` | A copy of each file before and after an edit. See [Undo and backups](/using/undo-and-backups) |
+| `trash/` | What the agent deleted, so it can be restored |
+| `logs/toolcalls.jsonl` | A record of each tool call and what was decided, with a hash of the arguments, not the arguments |
+
+Specs are Markdown files in `<project>/specs/`. See [Specs](/features/specs).
+
+## Settings and where they are kept
+
+| Setting | Change it with | Kept in |
+|---|---|---|
+| Provider, key and model | `/connect`, `/provider`, `/model` | `credentials.json` (VS Code: its secret storage) |
+| Tools for a model on this computer | `/agent on`, `/agent off`, `/web on`, `/web off` | `local-models.json` |
+| Not indexing a folder | `never` at the index offer | the state folder |
+| Active spec | `/spec use`, `/spec off` | the state folder |
+| Rules | `/remember`, `/forget` | `rules/<project>.md` |
+| MCP servers and their keys | `/mcp`, `/mcp-server`, Customize → MCP | `mcp-servers.json`, `mcp-secrets.json` |
+| Extension settings | VS Code's Settings | VS Code. See [VS Code settings](/reference/vscode-settings) |

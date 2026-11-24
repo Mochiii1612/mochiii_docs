@@ -1,0 +1,50 @@
+---
+title: "OpenRouter"
+description: "Use an OpenRouter key with Mochiii, and the built-in model tiers."
+---
+
+OpenRouter is Mochiii's default address: paste a key that starts with `sk-or-`, and pick one of the built-in model tiers with `/model`.
+
+*Describes terminal app 1.6.1 and VS Code extension 1.0.1, which works with terminal app 1.6.1 or later.*
+
+| | |
+|---|---|
+| Address | `https://openrouter.ai/api/v1`, also the address Mochiii uses when none is set |
+| Key | starts with `sk-or-` |
+| Name for `/connect` | `openrouter` |
+
+## Connect
+
+<Steps>
+  <Step title="Get a key">
+    Create an API key in your OpenRouter account.
+  </Step>
+  <Step title="Open the provider list">
+    In the terminal app type `/provider`; in VS Code type `/connect`. Pick **OpenRouter**, or **Any key**.
+  </Step>
+  <Step title="Paste the key">
+    Mochiii checks it with OpenRouter before it stores it.
+  </Step>
+</Steps>
+
+## Models
+
+With OpenRouter, `/model` offers the tiers in `models.json`. The default is `deepseek_v4_pro`.
+
+| Tier | Model |
+|---|---|
+| `deepseek_v4_pro` (default) | DeepSeek V4 Pro |
+| `primary` | DeepSeek V4 Flash |
+| `laguna_s_21` | Laguna S 2.1 |
+| `step_37_flash` | Step 3.7 Flash |
+| `ling_30_flash` | Ling 3.0 Flash |
+| `minimax_m3` | MiniMax M3 |
+| `qwen35_397b` | Qwen 3.5 397B |
+| `qwen36_plus` | Qwen 3.6 Plus |
+| `gemini_36_flash` | Gemini 3.6 Flash |
+
+Select one with `/model <tier>`, for example `/model minimax_m3`. `/model clear` goes back to the default.
+
+<Note>
+  The routing settings in `models.json` (its `zdr` block) are acted on by OpenRouter only. Any other provider keeps your prompts under its own data policy. See [models.json](/reference/models-json).
+</Note>

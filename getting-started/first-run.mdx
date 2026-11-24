@@ -1,50 +1,67 @@
 ---
 title: "First run"
-description: "What the Mochiii terminal app asks the first time you start it in a folder, and what a new launch starts with."
+description: "What Mochiii asks the first time you open a folder, in the terminal app and in VS Code."
 ---
 
-Start Mochiii inside a project folder:
+The first time you open a folder, Mochiii offers to index it for code search and asks you to connect a model.
 
-```bash
-cd path/to/your/project
-mochiii
-```
+*Describes terminal app 1.6.1 and VS Code extension 1.0.1, which works with terminal app 1.6.1 or later.*
 
-Mochiii works on the folder it starts in. Started in your home folder, or at the top of a drive, it says so and suggests starting it inside a project folder instead. It still runs.
+## In the terminal app
 
-## Code search for this folder
+<Steps>
+  <Step title="Start it in the project">
+    ```bash
+    cd path/to/your/project
+    mochiii
+    ```
 
-The first time Mochiii runs in a folder, it offers to download its code-search model, once for your computer, and to index the folder, so answers are grounded in your code:
+    Started in your home folder or at the top of a drive, Mochiii says so and suggests a project folder. It still runs, but code search is never offered there.
+  </Step>
+  <Step title="Index the folder">
+    The first time, Mochiii offers to download its code-search model (once for your computer) and to index the folder:
 
-```text
-Mochiii can index this folder so it finds the right code for your questions.
-It runs on this computer and takes a minute or two for most projects.
-Index /path/to/your/project now? [Y/n/never]
-```
+    ![The terminal app asking "Index /home/dev/tiny-shop now? [Y/n/never]"](/images/screens/terminal-first-run-index.webp)
 
-- `Y`, or Enter, builds the index.
-- `n` skips it. Mochiii asks again next time.
-- `never` skips it, and Mochiii stops asking for that folder.
+    `Y` or Enter builds the index, `n` skips it this time, and `never` stops asking for this folder.
+  </Step>
+  <Step title="Connect a model">
+    With no key yet, Mochiii opens on its setup: choose a provider, paste its key, choose a model. `Esc` skips to the chat, and a key is asked for when you send your first question. See [Choosing a model](/models/choosing-a-model).
+  </Step>
+  <Step title="Ask">
+    The first screen is the lotus, "What can I do for you?" and the prompt, ready to type into.
+
+    ![The terminal app's first screen: the lotus, "What can I do for you?", the prompt between two rules, and the model, auto-approve and keys under it](/images/screens/terminal-first-screen.webp)
+  </Step>
+</Steps>
 
 | Command | Effect |
 |---|---|
 | `mochiii --index` | Index the folder again, then open the chat |
-| `mochiii --no-index` | Skip the offer |
-| `MOCHIII_NO_INDEX=1 mochiii` | The same as `--no-index`, set as an environment variable |
+| `mochiii --no-index` | Do not offer to index this folder |
+| `MOCHIII_NO_INDEX=1 mochiii` | The same as `--no-index` |
 
-If the download of the code-search model failed during an install, see [Troubleshooting](/troubleshooting#code-search-is-off).
+**Each launch starts a new chat.** Quitting a chat you have not saved asks first. See [History, saved chats and /compact](/using/history).
 
-## Choose a provider and a model
+## In VS Code
 
-With no key yet, Mochiii opens on its setup, `connect a model provider to get started`: choose a provider, paste its key, and choose a model. The list starts with **Any key**, where the provider is told from the key itself, and **On this computer**, for a model server on your own machine. `Esc` skips to the chat; a key is then asked for when you send your first question.
+<Steps>
+  <Step title="Open the chat">
+    Click the lotus in the Activity Bar, or run **Mochiii: Open Chat**.
+  </Step>
+  <Step title="Index the folder">
+{/* SCREENSHOT GAP: VS Code's index offer. The test folder was already indexed by the terminal app run, so the offer did not appear. */}
 
-You can run the same steps at any time with `/provider`. See [Connect a model](/getting-started/connect-a-model).
+    Mochiii asks once per folder whether to index it. Later, run **Mochiii: Index Folder for Code Search**. The first index also downloads the code-search model, once for your computer.
+  </Step>
+  <Step title="Connect a model">
+    Type `/connect`. See [Choosing a model](/models/choosing-a-model).
+  </Step>
+  <Step title="Ask">
+    A new chat starts in Auto. The first question in Auto shows a one-time warning: see [Modes](/using/modes).
+  </Step>
+</Steps>
 
-## Each launch starts a new chat
+![The Mochiii panel before the first question: "What can I do for you?" and the prompt box](/images/screens/vscode-panel-empty.webp)
 
-Every time you start the terminal app, it opens an empty chat. Your earlier chats are kept only if you saved them:
-
-- `/save` keeps the chat on screen, and `/resume` reopens a saved one.
-- Quitting a chat you have not saved asks first: `This chat is not saved and will be erased. Save or quit?`
-
-Each terminal window has its own chat, and the VS Code extension has its own too. See [Saved sessions](/using/saved-sessions).
+Without an index the agent can still read and search files with its tools.

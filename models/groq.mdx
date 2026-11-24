@@ -1,0 +1,33 @@
+---
+title: "Groq"
+description: "Use a Groq API key with Mochiii."
+---
+
+Paste a Groq key, which starts with `gsk_`, and Mochiii sends your questions to Groq.
+
+*Describes terminal app 1.6.1 and VS Code extension 1.0.1, which works with terminal app 1.6.1 or later.*
+
+| | |
+|---|---|
+| Address | `https://api.groq.com/openai/v1` |
+| Key | starts with `gsk_` |
+| Name for `/connect` | `groq` |
+
+## Connect
+
+<Steps>
+  <Step title="Get a key">
+    Create an API key in your Groq account.
+  </Step>
+  <Step title="Open the provider list">
+    In the terminal app type `/provider` (or `/connect`); in VS Code type `/connect`. Pick **Groq**, or **Any key** to let Mochiii tell the provider from the key.
+  </Step>
+  <Step title="Paste the key">
+    The key is asked for in a masked box, never as an argument. Mochiii checks it with Groq before it stores it; a key Groq refuses is not stored.
+  </Step>
+  <Step title="Pick a model">
+    For any provider but OpenRouter, connecting asks Groq which models it serves, finds one that answers, and `/model` then lists Groq's own models.
+  </Step>
+</Steps>
+
+The key is sent to Groq and to no other provider. See [Choosing a model](/models/choosing-a-model) for switching models and checking which key is in use.

@@ -1,0 +1,60 @@
+---
+title: "Install the terminal app"
+description: "Install the Mochiii terminal app with npm and start it in a project folder."
+---
+
+Install the terminal app with `npm install -g mochiii`, then run `mochiii` inside a project folder.
+
+*Describes terminal app 1.6.1 and VS Code extension 1.0.1, which works with terminal app 1.6.1 or later.*
+
+## Requirements
+
+| System | Terminal app |
+|---|---|
+| Linux x64 and ARM64 | Yes |
+| macOS on Apple Silicon | Yes |
+| Windows x64 | Yes |
+| Windows on ARM | Yes, the x64 build under Windows' emulation |
+| Intel Mac | No: the engine that runs the code-search model has no Intel Mac build |
+
+You need [Node.js](https://nodejs.org) 18 or later, which includes npm.
+
+- On Linux, code search needs glibc 2.27 or newer. On Alpine and other musl systems you get a build without code search; chat and agent mode still work.
+- On Windows, code search needs the Microsoft Visual C++ runtime, which most PCs already have.
+
+## Install
+
+<Steps>
+  <Step title="Install with npm">
+    The same command on every system:
+
+    ```bash
+    npm install -g mochiii
+    ```
+
+    npm installs the `mochiii` package and the one platform package that matches your computer.
+  </Step>
+  <Step title="Check it">
+    ```bash
+    mochiii --version
+    ```
+
+    If `mochiii` is not found in the terminal you installed from, open a new terminal.
+  </Step>
+  <Step title="Start it in a project">
+    ```bash
+    cd path/to/your/project
+    mochiii
+    ```
+
+    The first start in a folder offers to index it and asks for a model. See [First run](/getting-started/first-run).
+  </Step>
+</Steps>
+
+## The background service
+
+`mochiii` starts Mochiii's background service for the folder if none is running. The service keeps running after the chat closes, so the next start is instant. `mochiii --stop` stops it. See [CLI flags](/reference/cli-flags).
+
+<Tip>
+  If `mochiii` says the package for your computer is not installed, run `npm install -g mochiii` again.
+</Tip>

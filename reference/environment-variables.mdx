@@ -1,0 +1,41 @@
+---
+title: "Environment variables"
+description: "The environment variables the Mochiii terminal app and its background service read."
+---
+
+A few environment variables change what Mochiii connects to and how the terminal app behaves; set them before Mochiii starts.
+
+*Describes terminal app 1.6.1 and VS Code extension 1.0.1, which works with terminal app 1.6.1 or later.*
+
+<Note>
+  Mochiii's background service reads its variables when it starts. If it is already running for the folder, run `mochiii --stop` first. Mochiii does not read `.env` files.
+</Note>
+
+## Model and key
+
+| Variable | What it does |
+|---|---|
+| `MOCHIII_API_KEY` | A provider key. It wins over a key you stored with `/connect` |
+| `MOCHIII_API_BASE` | The address of an OpenAI-compatible API. Unset, Mochiii uses `https://openrouter.ai/api/v1` |
+| `MOCHIII_MODEL` | One model, named the way the server at `MOCHIII_API_BASE` names it, for example `qwen2.5-coder:7b`. Replaces every tier in `models.json` |
+
+In VS Code, use the `mochiii.apiBase` and `mochiii.model` settings instead; the extension hands its key to the service without putting it in the environment. See [VS Code settings](/reference/vscode-settings).
+
+## The terminal app
+
+| Variable | What it does |
+|---|---|
+| `MOCHIII_NO_INDEX=1` | Do not offer to index this folder. The same as `mochiii --no-index` |
+| `MOCHIII_FULLSCREEN=1` | Draw the chat on the terminal's full screen, with no scrollback. The same as `mochiii --fullscreen` |
+| `MOCHIII_MAX_TURNS` | How many turns a session keeps before it trims the oldest. 500 by default |
+| `MOCHIII_MAX_TRANSCRIPT_BYTES` | How much text a session keeps before it trims the oldest. 2.0 MB by default |
+| `NO_COLOR` | Any value turns colour off and keeps the layout |
+| `XDG_STATE_HOME` | Moves the state folder to `$XDG_STATE_HOME/mochiii` |
+
+## A model server's own variables
+
+Your model server has settings of its own. For Ollama, `OLLAMA_CONTEXT_LENGTH` sets the context window it gives a model (4,096 tokens otherwise). See [Local models](/models/local-models#the-context-window).
+
+## MCP servers
+
+A server you add can read a variable from the environment Mochiii's background service started with, when you have stored no value for it. See [Keys and variables](/mcp/keys-and-variables).

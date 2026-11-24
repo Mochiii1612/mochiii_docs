@@ -1,0 +1,49 @@
+---
+title: "GitHub"
+description: "Read issues and pull requests, and see why CI failed, from the terminal app."
+---
+
+Mochiii reads your project's GitHub repository (issues, pull requests, and why CI failed) and attaches what it finds to your next question.
+
+*Describes terminal app 1.6.1 and VS Code extension 1.0.1, which works with terminal app 1.6.1 or later.*
+
+These commands are in the terminal app. Opening pull requests, answering review comments and merging are not built yet.
+
+## Connect
+
+<Steps>
+  <Step title="Give Mochiii its own GitHub account">
+    GitHub never lets the author of a pull request approve it, so a token for your own account would leave you unable to approve Mochiii's work. Create an account for Mochiii and invite it to the repository. An account invited to one repository reaches only that one.
+  </Step>
+  <Step title="Make a token">
+    Signed in as that account, make a classic personal access token with the scope `repo` only. Leave out `workflow`.
+  </Step>
+  <Step title="Connect">
+    Type `/github connect` and paste the token into the hidden box. Mochiii checks it with GitHub before it keeps it, and warns if it is a token for your own account.
+  </Step>
+</Steps>
+
+The token is stored in `~/.mochiii/github.json`, readable only by you, and is never shown to the model, put in a command's environment, or logged.
+
+## Read
+
+{/* SCREENSHOT GAP: /issue and /pr output. Needs a GitHub token and repository; not run. */}
+
+```text
+/github          # who Mochiii is on GitHub, and this project's repository
+/issue 104       # an issue and its comments
+/issues bug      # the open issues, optionally with a label
+/pr              # the open pull requests
+/pr 31           # one: its checks, reviews, and whether it can merge
+/pr 31 log       # the lines that say why its CI failed, not the whole log
+```
+
+`/issue`, `/pr 31` and `/pr 31 log` attach what they show to your next question, once. In agent mode the model can read the same things itself with one read-only tool, `github`.
+
+## One repository per project
+
+The repository is read from the `origin` remote and pinned when you connect. If `origin` changes later, `/github` says so, and Mochiii keeps the pinned one until you run `/github use`. `/github disconnect` removes the connection.
+
+<Note>
+  Anyone can write on a public repository, so what Mochiii reads there reaches the model fenced as data, scrubbed of secrets, and with each author's relationship to the repository beside their name. The `github` tool takes only a number, a kind and a label, so nothing the model has read can be sent anywhere through it.
+</Note>

@@ -1,0 +1,23 @@
+---
+title: "Project rules"
+description: "Save a rule once with /remember, and every later chat in the project follows it."
+---
+
+A rule is one line you choose to keep, such as a fact about the project or how you want work done in it, and every later chat in that project starts with it.
+
+*Describes terminal app 1.6.1 and VS Code extension 1.0.1, which works with terminal app 1.6.1 or later.*
+
+```text
+/remember tests here are run with make check
+/remember never edit the files under api/gen
+/rules        # lists them, numbered, and the file they are kept in
+/forget 2     # removes rule 2
+```
+
+- **Only what you save.** A rule is written when you type `/remember`, and at no other time. The model has no tool that writes one.
+- **Both clients follow them.** The three commands are in the terminal app only for now, but the rules are added to every turn, so a rule saved in the terminal applies to the VS Code panel too.
+- **Kept outside the project,** in your state folder, in a file only you can read. A repository you clone cannot bring rules with it. You can edit the file by hand; `/rules` prints its path.
+- **Bounded:** at most 50 rules, 300 bytes each, 4 KB together, because every rule is sent with every question.
+- **Not for secrets.** A rule goes to the model's provider with every question, so one that looks like a key or a password is refused.
+
+A rule is an instruction about the work. It does not change which tools the model has or what needs your approval.

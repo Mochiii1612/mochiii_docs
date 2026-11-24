@@ -1,20 +1,28 @@
 ---
 title: "Troubleshooting"
-description: "Fixes for common Mochiii problems: chats that stop saving after an update, code search that is off, MCP servers that do not start, and model errors."
+description: "Fixes for common Mochiii problems: chats that stop saving after an update, code search that is off, models that do not answer, and VS Code notices."
 ---
+
+Most problems come from mismatched versions, a missing code-search engine, or a model that cannot be reached; each has a fix below.
+
+*Describes terminal app 1.6.1 and VS Code extension 1.0.1, which works with terminal app 1.6.1 or later.*
 
 ## I updated one client and chats stopped saving
 
-Mochiii keeps chat memory in one file for every folder on the machine. The first new version to open it upgrades it in place, keeping every chat, and an older version cannot use the upgraded file. The VS Code extension brings its own copy of Mochiii's background service, so if the terminal app and the extension are on different versions, the older one misbehaves until it is updated:
+Mochiii keeps chat memory in one file for every folder on the machine. The first new version to open it upgrades it in place, keeping every chat, and an older version cannot use the upgraded file. The VS Code extension brings its own copy of Mochiii's background service, so if the two are out of step, the older one misbehaves:
 
-- a service that was already running keeps answering you, but **does not save new chat turns** (its log says why), until it is restarted on the new version;
+- a service that was already running keeps answering, but **does not save new chat turns** (its log says why), until it is restarted on the new version;
 - a service that starts after the upgrade **runs without chat memory**, and its log says `memory db schema version … is newer than this binary supports`.
 
-**What to do.** Update both, then restart: run `mochiii -stop` in each folder you use the terminal app in, and reload VS Code. There is no automatic way back to an older version after the upgrade.
+**What to do.** VS Code extension 1.0.1 works with terminal app 1.6.1 or later. Update the terminal app first (`npm install -g mochiii@latest`), run `mochiii -stop` in each folder you use it in, then update the extension and reload VS Code. There is no automatic way back to an older version after the upgrade.
+
+## VS Code will not replace my extension
+
+A Mochiii `.vsix` installed by hand and numbered 1.1.0 to 1.6.1 is not replaced by 1.0.1 from the Marketplace. Uninstall it first, then install from the Marketplace.
 
 ## Code search is off
 
-**The install warned at "Downloading the code-search model".** On 19 November the download address for ONNX Runtime, the engine Mochiii's code search runs on, stopped answering, and installs of 1.5.1 or earlier made after that could not build their index. Update, then run:
+**An install warned at "Downloading the code-search model".** Installs of 1.5.1 or earlier made after 19 November could not download the engine code search runs on. Update, then run:
 
 ```bash
 mochiii download-model
@@ -22,29 +30,23 @@ mochiii download-model
 
 **Your system is missing something code search needs.**
 
-- On Linux, code search needs glibc 2.27 or newer (Ubuntu 18.04+, Debian 10+, RHEL 8+, Fedora 28+). On Alpine and other musl systems, npm installs a build without code search; chat and agent mode work.
+- On Linux, code search needs glibc 2.27 or newer (Ubuntu 18.04+, Debian 10+, RHEL 8+, Fedora 28+). On Alpine and other musl systems the build has no code search; chat and agent mode work.
 - On Windows, code search needs the Microsoft Visual C++ runtime, which most PCs already have.
+- Intel Macs are not supported.
 
-To index a folder again, run `mochiii --index` in it.
+To index a folder again, run `mochiii --index` in it, or **Mochiii: Index Folder for Code Search** in VS Code. See [How indexing works](/features/indexing).
 
 ## `mochiii` is not found
 
-Open a new terminal: the one you installed from may not find the new command yet.
-
-If `mochiii` runs but says the package for your computer is not installed, run `npm install -g mochiii` again. The `mochiii` package depends on a separate package for each platform, and your install is missing the one for your computer.
+Open a new terminal: the one you installed from may not find the new command yet. If `mochiii` runs but says the package for your computer is not installed, run `npm install -g mochiii` again.
 
 ## Mochiii says this is not a project folder
 
-Mochiii works on the folder it starts in. Started in your home folder or at the top of a drive, it says so, and suggests starting it inside a project folder. It still runs. `cd` into the project and start it there.
+Mochiii works on the folder it starts in. Started in your home folder or at the top of a drive, it says so and suggests a project folder. It still runs, but code search is never offered there. `cd` into the project and start it there.
 
-## An MCP server won't start
+## VS Code says it has no API key, with a model on my computer
 
-In the terminal app, `/mcp` opens a panel listing every server and its state, with the ones that need you first. A server that fails to start says why:
-
-- **A key has no value.** The message names the key and the command that sets it.
-- **A program is missing or too old**, for example "it needs Node.js >=24, and this computer has v20.20.2". Install or update it.
-
-`/mcp-server check <name>` starts one server again to see whether it works; add `--timeout 60` to wait longer, for example while `npx` downloads it the first time. See [Add an MCP server](/mcp/add-a-server).
+With only `mochiii.apiBase` and `mochiii.model` set for a local server, extension 1.0.1 still shows "Mochiii has no API key, so the model cannot be reached and every answer will fail." Choose **Not now**: questions go to your local server without a key. See [Local models](/models/local-models).
 
 ## The model sent back an empty answer
 
@@ -54,22 +56,25 @@ Mochiii says `the model sent back an empty answer. Ask again, or pick another mo
 
 - **The server stopped.** Mochiii says the model is unreachable, and adds "start it again (for Ollama: ollama serve)".
 - **The model was deleted from the server.** `/connect local` lists the models the server has now.
-- **It answers, but uses no tools.** A model on your computer gets no tools until you type `/agent on`. See [Connect a model](/getting-started/connect-a-model#tools-for-a-local-model).
+- **It answers, but uses no tools.** In the terminal app, a model on your computer gets no tools until `/agent on`, and only if it passes the check. See [Local models](/models/local-models).
+- **It is slow.** A model on a laptop's CPU can take minutes for one answer; the server is given five minutes before its first token.
 
 ## The provider is busy or limits my requests
 
-A provider that answers "too many requests" is waited out: up to five tries over about 75 seconds, following the provider's `Retry-After`. While Mochiii waits, the terminal app shows `⏳ rate-limited — trying again in 5s` where "thinking" is. A task the provider still refuses says the rate limit is why.
-
-A request too large for the model, or for your plan's tokens per minute, is made smaller and sent once more, and the answer says so. If it still cannot get through, Mochiii says the provider's numbers and what would change them: a model with a higher limit (`/model`), or a key on a plan that allows more (`/connect`).
+A provider that answers "too many requests" is waited out: up to five tries over about 75 seconds, following the provider's `Retry-After`. While Mochiii waits, the terminal app shows `⏳ rate-limited — trying again in 5s` where "thinking" is. A task the provider still refuses says the rate limit is why, and keeps everything it did.
 
 ## VS Code: No answer arrived
 
-A turn that hears nothing from the background service for 10 minutes (35 while a tool runs) ends with **No answer arrived** and **Try again**. If it keeps happening, check the logs, below.
+A turn that hears nothing from the background service for 10 minutes (35 while a tool runs) ends with **No answer arrived** and **Try again**. Time waiting for your approval does not count. If it keeps happening, check the log: run **Mochiii: Show Daemon Log**.
+
+## An MCP server will not start
+
+See [Troubleshooting MCP](/mcp/troubleshooting).
 
 ## Where the logs are
 
-Mochiii's logs are in `~/.local/state/mochiii/logs/`. Logs can contain file paths from your project: remove anything you don't want to share before you send them.
+In `~/.local/state/mochiii/logs/` (on Windows, `%LOCALAPPDATA%\mochiii\logs\`). In VS Code, **Mochiii: Show Daemon Log** opens the log. Logs can contain file paths from your project: remove anything you do not want to share before you send them.
 
 ## Still stuck
 
-Email supportmochiii@gmail.com with your OS, which client and version (`mochiii --version`), what you did, what happened, and the lines from the log. See [Support](https://www.mochiii.in/support).
+Email supportmochiii@gmail.com with your system, which client and its version, what you did, what happened, and the lines from the log. See [Beta](/getting-started/beta).
