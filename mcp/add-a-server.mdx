@@ -1,94 +1,92 @@
 ---
-title: "Add an MCP server"
-description: "Add an MCP server to the Mochiii terminal app, with the /mcp panel or by command, give it a key, check it, and remove it."
+title: "Add your own server"
+description: "Add an MCP server by command, by URL, or by pasting its JSON, in VS Code or the terminal app."
 ---
 
-An MCP server is a program that gives Mochiii extra tools. This page covers adding one from the terminal app. In VS Code, use the extension's Marketplace: see [VS Code](/using/vscode#mcp-servers-and-the-marketplace).
+Add any MCP server by its command, its URL, or the JSON from its setup page; Mochiii shows what will run and adds it only after you type its name.
+
+*Describes terminal app 1.6.1 and VS Code extension 1.0.1, which works with terminal app 1.6.1 or later.*
 
 <Warning>
-  An MCP server you add runs as an ordinary program with your full privileges. Mochiii cannot confine it. Only add a server whose program you trust.
+  A server you add runs as an ordinary program with your privileges. Mochiii cannot confine it. Only add a server whose program you trust.
 </Warning>
 
-## The /mcp panel
+## In VS Code
 
-Type `/mcp` to open a panel over the chat. It lists every server and its state, with the ones that need you first.
+<Steps>
+  <Step title="Open the form">
+    **⋯ → Customize → MCP → Add server → Your own server**, or run **Mochiii: Add MCP Server…**. `/mcp-server add` in the chat opens the same form.
+  </Step>
+  <Step title="Describe the server">
+    Pick **Command**, **URL** or **Paste JSON**.
 
-To add a server, press `a` and paste the JSON from the server's setup page: one server, or a whole `mcpServers` block, the format other apps use. You can also give a command or a URL. Each server is shown, confirmed by typing its name, then added and started. Its tools are ready on your next question.
+    ![The "A server of your own" form: Command, URL and Paste JSON tabs, then Name, Command, "Variables it reads" and "Starts in", set to a folder of its own (the recommended choice)](/images/screens/vscode-add-own-server.webp)
 
-## Add a server by command
+    For a command: a name, the program and its arguments (run directly, no shell), the variables it reads, and where it starts. Never put a key in the command: it is stored and shown.
+  </Step>
+  <Step title="Confirm">
+    **Continue** shows what will run. Type the server's name to add it.
+  </Step>
+</Steps>
 
-Inside the Mochiii chat, type `/mcp-server add`, then a name you choose, then the command that starts the server:
+## In the terminal app: paste JSON into /mcp
+
+{/* SCREENSHOT GAP: the /mcp panel. In a pty run of terminal app 1.6.1 (npm, scrollback mode, no servers added), /mcp then Enter drew nothing, so no real screenshot exists. Described from docs/REFERENCE.md:1110-1166. */}
+
+Type `/mcp` to open the panel of your servers, then paste the server's JSON straight into it. `a` opens a box for a command or a URL instead. The panel reads:
+
+| Paste | From |
+|---|---|
+| `{"mcpServers": {"a": {...}}}` | Claude Desktop, Cursor, Cline, Claude Code; a whole config file is fine |
+| `{"servers": {"a": {...}}}` | VS Code's `mcp.json` |
+| `{"a": {...}, "b": {...}}` | The block on its own |
+| `{"command": ..., "args": [...], "env": {...}}` | One program with no name; the panel asks for one |
+| `{"url": ..., "type": "http"}` | One remote server with no name (`http`, `sse` or `streamable-http`) |
+
+<Steps>
+  <Step title="Review">
+    One page shows every server in the paste: the exact command a program will run, or the exact address a remote server is sent to, and which keys the paste gave and which are missing.
+  </Step>
+  <Step title="Agree to each one">
+    For each server, its warning, then its name typed to add it. Enter on an empty line skips it, `Esc` cancels them all. Nothing is added until the last answer.
+  </Step>
+  <Step title="Added and started">
+    Each server is added and started, and a line says how it went: connected (with its tool count), needs a sign-in, needs a key, failed to start (and why), or skipped.
+  </Step>
+</Steps>
+
+A field Mochiii does not know refuses the paste, naming the field, and the paste is put back in the box to fix. Cline's `autoApprove`, `alwaysAllow` and `timeout` are left out with a note: every tool still asks before it runs.
+
+## In the terminal app: by command
 
 ```text
 /mcp-server add files npx -y @modelcontextprotocol/server-filesystem /home/me/notes
 ```
 
-Use a full path for the folder. Mochiii splits the line into words itself, with quotes keeping a path that has spaces together. It does not run a shell.
-
-Mochiii does not add the server yet. It shows what you are agreeing to: the exact command, that it runs with your full privileges, which environment variables it is given, and where it starts. To go on, type the server's name, here `files`, and press Enter.
-
-Anything else, or Esc, cancels, and nothing is stored. If you cancel by typing something else, Mochiii puts what you typed back in the input box. Clear it before you type your next command.
-
-Mochiii then starts the server once and asks it for its tools. It tells you how many it offers. They are available from your next question, and each tool asks before it runs. A server that fails to start says why, for example "it needs Node.js >=24, and this computer has v20.20.2".
-
-The first start can be slow, for example while `npx` downloads the server. If the server does not start in time, Mochiii says so and keeps it. Run `/mcp-server check files` to try again. Add `--timeout 60` to wait longer.
-
-## Give a server a key
-
-Some servers read a key from an environment variable. Name the variable when you add the server, with `--env`:
-
-```text
-/mcp-server add github --env GITHUB_TOKEN npx -y @modelcontextprotocol/server-github
-```
-
-`--env` takes the variable's **name**. Do not type the value on that line. Mochiii refuses a line like `--env GITHUB_TOKEN=abc` or `GITHUB_TOKEN=abc npx ...`, because the command line is stored and shown. A key written into the server's own arguments, such as `--api-key …` or `--token=…`, is refused too.
-
-When you add the server, Mochiii asks for each variable's value in a hidden prompt. If a server fails to start because a key has no value, the message names the key and the command that sets it. To set or change a value later, use `/mcp-server key`:
-
-```text
-/mcp-server key github GITHUB_TOKEN
-```
-
-Mochiii then asks for the value in a hidden prompt. Type or paste it and press Enter. Esc cancels. The server uses the value from its next start.
-
-The variable must be one the server was added with `--env`. If it is not, Mochiii still asks for a value, then refuses it and stores nothing. To add a variable, remove the server and add it again with `--env`.
-
-When a server starts, it uses the value you stored with `/mcp-server key <name> <VARIABLE>`. If there is none, it uses the variable from the environment Mochiii's background service was started with. To use that route, run `mochiii --stop`, export the variable, then start Mochiii. A service that is already running does not see a variable you export after it started. Mochiii does not read `.env` files.
-
-## Look at your servers
+Mochiii splits the line into words itself (quotes keep a path with spaces together) and runs no shell. It shows the exact command, that it runs with your privileges, its variables and where it starts; type the server's name to add it. It then starts the server once and says how many tools it offers. A first start can be slow while `npx` downloads the server; run `/mcp-server check files` to try again, with `--timeout 60` to wait longer.
 
 | Command | What it does |
 |---|---|
-| `/mcp` | The panel: every server and its state, the ones that need you first |
-| `/mcp-server` | Lists your servers and whether each one is connected, the tools the model would be offered, and any tools left off that list |
-| `/mcp-server check [name] [--timeout N]` | Starts one server, or all of them, to see whether they work. `N` is seconds, from 1 to 120 |
-| `/mcp-server get name` | Shows one server: whether it is connected, its command, the file it is defined in, its variables and whether each has a stored value, and where it starts |
-| `/mcp-server disable name` | Pauses a server and keeps it for later |
-| `/mcp-server enable name` | Resumes a paused server |
-| `/mcp-server remove name` | Removes a server you added, and the keys you gave it |
+| `/mcp-server` | Your servers and whether each is connected, the tools the model would be offered, and any left off that list |
+| `/mcp-server check [name] [--timeout N]` | Starts one server, or all of them, to see whether they work (N from 1 to 120 seconds) |
+| `/mcp-server get <name>` | One server: its command, file, variables and where it starts |
+| `/mcp-server disable <name>` / `enable <name>` | Pauses or resumes a server |
+| `/mcp-server remove <name>` | Removes a server you added, and its keys |
 
-## How many tools the model sees
+## Where it starts
 
-The model is shown at most 24 tools at a time. Mochiii's own tools come first. For the rest, each question gets the tools that fit it best, and the model looks up the others when a task needs them.
+A server you add starts in a folder of its own, not in your project, because a launcher such as `npx` or `uvx` decides what to run partly from the folder it starts in. If a server only needs the project's files, give it the project's path as an argument. If it must start inside the project, choose that in VS Code's **Starts in**, or add it with `--in-project` in the terminal app; Mochiii warns what that means.
 
-When you add a server that has more tools than fit, Mochiii tells you how many are not on the default list, and names them. `/mcp-server` shows each server's whole tool count, with a note that the tools not on a turn's list are reached through `find_tools`.
+## A project's own servers
 
-## Where things are kept
+A project's `.mcp.json` can only propose a server. It shows as pending and does not start, not even for a check, until you approve it (`/mcp-server approve <name>`, or **Mochiii: Approve MCP Server the Project Proposes…**). The approval is for that exact definition in that folder: if the project changes it, you are asked again.
+
+## Where it is kept
 
 | What | Where |
 |---|---|
-| The servers you added: name, command, arguments and variable names | `~/.mochiii/mcp-servers.json` |
-| Keys you gave with `/mcp-server key` | `~/.mochiii/mcp-secrets.json`, readable only by you |
-| Servers you approved from a project's `.mcp.json` | `~/.mochiii/mcp-approvals.json`, readable only by you |
+| The servers you added: name, command, arguments and variable names | `~/.mochiii/mcp-servers.json`, readable only by you |
+| Their keys | `~/.mochiii/mcp-secrets.json`, readable only by you |
+| Servers you approved from a project's `.mcp.json` | `~/.mochiii/mcp-approvals.json` |
 
-None of these files is in your project.
-
-A project cannot start a server by itself. Its `.mcp.json` file can only propose one. `/mcp-server` shows a proposed server as pending, and it does not start, not even for `/mcp-server check`, until you approve it with `/mcp-server approve name`. Approving shows the same warning as adding, and you type the server's name to go on. The approval is for that exact definition in that folder: if the project changes it, you are asked again.
-
-A server you add starts in a folder of its own, not in your project. If a server has to start inside the project, add it with `--in-project`:
-
-```text
-/mcp-server add name --in-project command args
-```
-
-Mochiii then warns that a project you open can change what a launcher such as `npx` runs. If a server only needs the project's files, give it the project's path as an argument instead.
+None of these is in your project, and the agent cannot add a server.

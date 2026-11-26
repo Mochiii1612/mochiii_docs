@@ -1,0 +1,48 @@
+---
+title: "CLI flags"
+description: "The mochiii command's flags and subcommands: --stop, --index, --version, one-shot prompts, and the background service's commands."
+---
+
+`mochiii` with no arguments opens the chat in the current folder; flags change what it does first, and subcommands run the background service's own commands.
+
+*Describes terminal app 1.6.1 and VS Code extension 1.0.1, which works with terminal app 1.6.1 or later.*
+
+Flags take one dash or two: `mochiii -stop` and `mochiii --stop` are the same.
+
+## Flags
+
+| Flag | What it does |
+|---|---|
+| `--stop` | Stops Mochiii's background service for this folder, then exits |
+| `--index` | Indexes (or re-indexes) this folder for code search, then opens the chat |
+| `--no-index` | Does not offer to index this folder (also `MOCHIII_NO_INDEX=1`) |
+| `--version` | Prints the version and exits |
+| `--fullscreen` | Draws the chat on the terminal's full screen, with no scrollback (also `MOCHIII_FULLSCREEN=1`) |
+| `--prompt "<text>"` | Sends one prompt and prints the answer instead of opening the chat. With no text, it reads the prompt from standard input, so `echo "…" \| mochiii` works too |
+| `--workspace <path>` | The folder to work on, instead of the current one |
+
+## Subcommands
+
+| Command | What it does |
+|---|---|
+| `mochiii index <path>` | Builds the code index for a folder |
+| `mochiii download-model` | Downloads the code-search model and its engine into `~/.mochiii/models/`, checking every file |
+| `mochiii connect` | Stores a provider key, typed at a hidden prompt. `--provider <name>`, `--api-base <url>`, `--show`, `--forget`, `--no-verify` |
+| `mochiii mcp list` | What agent mode would offer, and each tool's policy |
+| `mochiii mcp add <name> [--env NAME] [--in-project] -- <command> [args…]` | Adds an MCP server, as `/mcp-server add` does |
+| `mochiii mcp remove <name>` | Removes one |
+| `mochiii edits undo [--session <ts>] [--force]` | Restores a backup of edits. See [Undo and backups](/using/undo-and-backups) |
+| `mochiii edits apply [file]` | Applies edit blocks, or a unified diff, through the same checks |
+| `mochiii daemon` | Runs the background service in the foreground |
+
+A key is never accepted as a command-line argument: in an argument it would be visible to other programs and kept in your shell history.
+
+## Background service flags
+
+| Flag | What it does |
+|---|---|
+| `--workspace <path>` | The folder whose code grounds answers |
+| `--config <path>` | A `models.json` to load instead of the built-in one |
+| `--log-file <path>` | Also writes the log to this file, rotated at 5 MiB |
+| `--no-context` | No code search for the service's lifetime |
+| `--no-scrub` | Turns off the pattern-based secret scrubber. Mochiii's own keys are still removed |

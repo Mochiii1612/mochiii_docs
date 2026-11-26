@@ -1,0 +1,64 @@
+---
+title: "Specs"
+description: "Write down what you want built with /spec, build it with /spec build, and grade the result with /spec check."
+---
+
+A spec is a Markdown file in `specs/` that says what to build and how to check it; Mochiii writes it with you, builds to it, and grades the result against it.
+
+*Describes terminal app 1.6.1 and VS Code extension 1.0.1, which works with terminal app 1.6.1 or later.*
+
+`/spec` works in both clients. In VS Code, **⋯ → Customize → Specs** lists them, with **New spec…**.
+
+<Steps>
+  <Step title="Write the spec">
+    ```text
+    /spec add a --verbose flag to the CLI
+    ```
+
+    The model writes one new file under `specs/`, shown to you as an edit to review. When you accept it, it becomes the **active spec**. Each success criterion is a line like this:
+
+    ```text
+    - [ ] C1: <something you can check> -- check: <a command, or what to look at>
+    ```
+  </Step>
+  <Step title="Build it">
+    `/spec build` builds what the active spec describes, tests first, with a live task list. While a spec is active, every question you ask works to it too, and that is often enough: an ordinary turn passed 12 of 12 spec tasks in Mochiii's own evaluation, and `/spec build` 10 of 12.
+  </Step>
+  <Step title="Check it">
+    {/* SCREENSHOT GAP: /spec check in 1.6.1. The text block below is from the 1.6.0 page this replaces, verified by a run then; not re-run for 1.6.1. */}
+
+    `/spec check` asks the model to check each criterion and record it as met, unmet or unknown, with its evidence:
+
+    ```text
+    spec check -- specs/demo.md: 1 of 2 criteria met
+    ✓ C1: main.go exists -- check: look for it
+        main.go:3
+    ✗ C2: there is a README.md -- check: look for it
+        no README.md in the project
+    ```
+
+    Mochiii then offers one edit for review: the spec itself, with `- [x]` on each criterion that is met.
+  </Step>
+</Steps>
+
+## Choosing the active spec
+
+| Command | What it does |
+|---|---|
+| `/spec use <file>` | Makes a spec the active one. `demo`, `demo.md` and `specs/demo.md` all name `specs/demo.md` |
+| `/spec show` | The active spec, and the specs in this project |
+| `/spec off` | No active spec |
+| `/spec build` | Builds what the active spec describes |
+| `/spec check` | Checks the project against the active spec |
+
+Mochiii remembers the active spec for the project. `/spec check` with no active spec says `no active spec to check against: /spec use <file>, or write one with /spec <goal>`.
+
+## In a check
+
+The model has the reading tools, `sandbox_exec` to run a build or test command, and `record_criterion` to record each verdict. A command asks you first, as usual. It has no tool that runs a shell command, edits or deletes a file, or reaches the internet, and no tools from your MCP servers.
+
+While a spec is active, the approval for a build or test command can offer one more answer: yes to that command for as long as the spec stays active. See [Approvals and permissions](/using/approvals).
+
+## Plans
+
+For a plan without a spec file, use Plan mode in VS Code or `/plan <request>` in either client. See [Modes](/using/modes).

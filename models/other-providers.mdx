@@ -1,0 +1,42 @@
+---
+title: "Other providers"
+description: "All 17 model providers Mochiii knows, their addresses, and how it recognises their keys."
+---
+
+Mochiii knows 17 providers; for most of them it tells the provider from the key itself and sends the key to that provider only.
+
+*Describes terminal app 1.6.1 and VS Code extension 1.0.1, which works with terminal app 1.6.1 or later.*
+
+| Provider | Name for `/connect` | Address | Key starts with |
+|---|---|---|---|
+| OpenRouter | `openrouter` | `https://openrouter.ai/api/v1` | `sk-or-` |
+| OpenAI | `openai` | `https://api.openai.com/v1` | `sk-proj-`, `sk-svcacct-`, or a bare `sk-` |
+| Anthropic | `anthropic`, `claude` | `https://api.anthropic.com/v1` | `sk-ant-` |
+| Google Gemini | `gemini`, `google` | `https://generativelanguage.googleapis.com/v1beta/openai` | `AIza` |
+| NVIDIA | `nvidia` | `https://integrate.api.nvidia.com/v1` | `nvapi-` |
+| Groq | `groq` | `https://api.groq.com/openai/v1` | `gsk_` |
+| DeepSeek | `deepseek` | `https://api.deepseek.com/v1` | a bare `sk-` |
+| xAI | `xai`, `grok` | `https://api.x.ai/v1` | `xai-` |
+| Mistral | `mistral` | `https://api.mistral.ai/v1` | no prefix |
+| Together AI | `together` | `https://api.together.xyz/v1` | `tgp_v1_` |
+| Fireworks AI | `fireworks` | `https://api.fireworks.ai/inference/v1` | `fw_` |
+| Cerebras | `cerebras` | `https://api.cerebras.ai/v1` | `csk-` |
+| Moonshot AI | `moonshot`, `kimi` | `https://api.moonshot.ai/v1` | a bare `sk-` |
+| Hugging Face | `huggingface`, `hf` | `https://router.huggingface.co/v1` | `hf_` |
+| SambaNova | `sambanova` | `https://api.sambanova.ai/v1` | no prefix |
+| Alibaba Cloud Model Studio (DashScope) | `dashscope`, `alibaba`, `qwen` | `https://dashscope-intl.aliyuncs.com/compatible-mode/v1` | a bare `sk-` |
+| Z.ai | `zai`, `zhipu`, `glm` | `https://api.z.ai/api/paas/v4` | no prefix |
+
+## How a key is recognised
+
+- **A prefix only one provider uses** (`sk-or-`, `sk-ant-`, `nvapi-`, …): the key goes to that provider.
+- **A bare `sk-`**, which OpenAI, DeepSeek, Moonshot and DashScope all use: the key is sent nowhere until you say whose it is. Pick the provider from the list, or type `/connect deepseek` (any name from the table).
+- **No prefix** (Mistral, SambaNova, Z.ai): pick the provider first.
+
+A key is only ever sent to the provider that issued it. Pick Groq and paste a key that starts with `nvapi-`, and it is checked with NVIDIA; the screen says so.
+
+## Models
+
+For every provider but OpenRouter, connecting asks the provider which models it serves and tries them until one answers; `/model` then lists that provider's models. Models the provider says are not there are left out, and ones that sent nothing back stay, marked as such.
+
+See [Choosing a model](/models/choosing-a-model).

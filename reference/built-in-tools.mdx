@@ -1,0 +1,69 @@
+---
+title: "Built-in tools"
+description: "Every tool Mochiii's agent has built in, what it does, and whether it asks first in each client."
+---
+
+These are the tools built into Mochiii; each has a policy (`allow` runs without asking, `ask` asks you, `deny` never offers it), and a few always ask whatever the policy says.
+
+*Describes terminal app 1.6.1 and VS Code extension 1.0.1, which works with terminal app 1.6.1 or later.*
+
+In VS Code, **Auto** answers the questions in this table for you inside the project, and **Manual** leaves them to you. See [Modes](/using/modes). In the terminal app, auto-approve (`Ctrl+Space`) answers them for you.
+
+## Reading and searching
+
+| Tool | What it does | Terminal app | VS Code |
+|---|---|---|---|
+| `read_file` | Reads a file and returns its text | allow; asks for a path outside the project | allow; asks outside the project |
+| `list_directory` | Lists the names in a folder | allow | allow |
+| `grep` | Exact or regular-expression search over the files `read_file` could open | allow | allow |
+| `find_files` | Finds files in the project by name | allow | allow |
+| `repo_map` | The shape of the project: its folders, their files, and top-level declarations | allow | allow |
+| `search_code` | Searches the code index by meaning. Offered only when the project has an index | allow | allow |
+| `query_compiler_definition`, `query_compiler_references` | Asks the language server (such as `gopls`) for a symbol's definition or its uses | ask | ask |
+| `investigate` | A short read-only sub-search that returns only its answer (at most 15 lines, with `file:line`) | allow | ask |
+| `git_history` | Reads git history, read-only: log, show, diff between commits, blame | ask | ask |
+
+## Changing files and running things
+
+| Tool | What it does | Terminal app | VS Code |
+|---|---|---|---|
+| `propose_edit` | Proposes an edit to a file, or a new file. It is not applied until it passes the checks and is accepted | ask | ask |
+| `propose_ast_edit` | Replaces a whole function or type, found through the compiler | ask | ask |
+| `rename_symbol` | Renames a symbol everywhere it is used, through the language server, all or nothing | ask | ask |
+| `sandbox_exec` | Runs one build or test program in the working copy, confined; not a shell | ask | ask |
+| `run_command` | Runs a shell command as if you typed it in your terminal. Not sandboxed | **always asks** | **always asks** |
+| `delete_path` | Deletes a file or folder by moving it to Mochiii's trash | **always asks** | **always asks** |
+| `move_path` | Moves or renames a file or folder; never overwrites | **always asks** | **always asks** |
+| `restore_deleted` | Puts back something `delete_path` deleted | **always asks** | **always asks** |
+| `checkpoint` | Saves the working copy's state under a name, or restores one | allow | ask |
+
+## Web and GitHub
+
+| Tool | What it does | Terminal app | VS Code |
+|---|---|---|---|
+| `web_search` | Searches the web | allow (a model on your computer: off until `/web on`) | deny |
+| `web_fetch` | Reads a web page | allow (as above) | deny |
+| `github` | Reads this project's issues, pull requests and CI failures. Only once a GitHub token is connected | allow | ask |
+
+## Tasks and specs
+
+| Tool | What it does | When it is offered |
+|---|---|---|
+| `update_tasks` | Shows you the plan and the progress through it | `/spec build` and checks |
+| `record_criterion` | Records whether the project meets one criterion of the active spec | `/spec check` |
+| `record_finding` | Records a fact the task established, with verifiable evidence | Long tasks |
+| `finish_task` | Ends a long task; "done" only after a passing build or test run with no edit since | Long tasks |
+
+These are `allow` in the terminal app.
+
+## find_tools
+
+When the menu of tools is cut to fit (at most 24 at a time), `find_tools` is added, and the model uses it to reach the tools left off. See [MCP overview](/mcp/overview#how-many-tools-the-model-sees).
+
+## What no tool can do
+
+Whatever you answer, Mochiii refuses to read SSH and other secret key files, credential stores and shell histories, and to write hidden files and folders, `~/bin`, `.desktop` launchers, or anything outside your home folder.
+
+<Note>
+  The terminal app's policies are its built-in configuration; the extension's come from the `models.json` it ships, where a tool not listed resolves to `ask`. To change a policy, use a `models.json` of your own: see [models.json](/reference/models-json).
+</Note>

@@ -1,42 +1,52 @@
 ---
-title: "Mochiii documentation"
-description: "An AI coding agent that knows your codebase, in VS Code and in your terminal. These pages describe version 1.6.0."
+title: "Overview"
+description: "Mochiii is an AI coding agent that knows your codebase, in VS Code and in your terminal."
 ---
 
-Mochiii is an AI coding agent that knows your codebase, in VS Code and in your terminal. It reads your project, answers questions about it, writes and fixes code, runs your tests, and works through long tasks.
+Mochiii is an AI coding agent that knows your codebase: it reads your project, answers questions about it, writes and fixes code, runs your tests, and works through long tasks, in VS Code and in your terminal.
 
-These pages describe version 1.6.0, of both the terminal app and the VS Code extension.
-
-<Note>
-  Mochiii is in beta. It works and is used daily, but some features and docs are still being finished. Expect changes between versions. Please report bugs to supportmochiii@gmail.com.
-</Note>
-
-## What you need to use it
-
-- **A model.** Mochiii asks a language model to answer. You give it an API key from a model provider, or you point it at a model server running on your own computer. See [Connect a model](/getting-started/connect-a-model).
-- **A project folder.** Mochiii works on the folder it starts in. Start it inside a project, not in your home folder.
-
-## Code search
-
-Mochiii indexes your project on your machine and finds the code that matters for each question. The index updates as you save, so answers match the code you have now. On first run in a folder, the terminal app asks whether to build the index. The index is kept in the `.mochiii/index` folder inside the project.
-
-## MCP servers
-
-You can add MCP servers to give Mochiii more tools. See [Add an MCP server](/mcp/add-a-server).
-
-## Where to start
+*Describes terminal app 1.6.1 and VS Code extension 1.0.1, which works with terminal app 1.6.1 or later.*
 
 <CardGroup cols={2}>
-  <Card title="Install Mochiii" icon="download" href="/getting-started/install">
-    The VS Code extension from the Marketplace, or the terminal app with npm.
+  <Card title="VS Code" icon="code" href="/getting-started/install-vscode">
+    A chat panel beside your code, with three modes: Auto, Manual and Plan.
   </Card>
-  <Card title="First run" icon="play" href="/getting-started/first-run">
-    What happens the first time you start Mochiii in a folder.
+  <Card title="Terminal app" icon="terminal" href="/getting-started/install-terminal">
+    The same agent in your terminal. One npm command on Linux, macOS and Windows.
   </Card>
-  <Card title="Connect a model" icon="plug" href="/getting-started/connect-a-model">
-    A provider key, or a model server on your computer.
+  <Card title="Models" icon="microchip" href="/models/choosing-a-model">
+    Your own key from one of 17 providers, or a model server on your computer.
   </Card>
-  <Card title="VS Code" icon="code" href="/using/vscode">
-    The chat panel, its modes, attachments and the MCP Marketplace.
+  <Card title="MCP servers" icon="plug" href="/mcp/overview">
+    More tools for the agent: from the Marketplace, or a server of your own.
   </Card>
 </CardGroup>
+
+## What you need
+
+- **A model.** Mochiii asks a language model to answer. Give it an API key from a model provider, or point it at a model server on your own computer. See [Choosing a model](/models/choosing-a-model).
+- **A project folder.** Mochiii works on the folder it starts in, or the folder open in VS Code.
+
+## What it does
+
+- **Knows your codebase.** It indexes your project on your machine and finds the code that matters for each question. See [How indexing works](/features/indexing).
+- **Edits you can check.** Every edit passes the same checks and is backed up. In VS Code you choose how much it asks: see [Modes](/using/modes).
+- **Long tasks and specs.** `/fix`, `/debug`, `/refactor` and `/hunt` work through a whole job; `/spec` builds to a written spec. See [Long tasks](/features/long-tasks) and [Specs](/features/specs).
+
+## Next steps
+
+<CardGroup cols={3}>
+  <Card title="First run" icon="play" href="/getting-started/first-run">
+    What happens the first time you open a folder.
+  </Card>
+  <Card title="Modes" icon="sliders" href="/using/modes">
+    Auto, Manual and Plan in VS Code.
+  </Card>
+  <Card title="Commands" icon="slash" href="/using/commands">
+    Every slash command, in both clients.
+  </Card>
+</CardGroup>
+
+<Note>
+  Mochiii is in beta. See [Beta](/getting-started/beta).
+</Note>

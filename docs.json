@@ -2,7 +2,7 @@
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
   "name": "Mochiii",
-  "description": "An AI coding agent that knows your codebase, in VS Code and in your terminal. Mochiii reads your project, answers questions about it, writes and fixes code, runs your tests, and works through long tasks.",
+  "description": "An AI coding agent that knows your codebase, in VS Code and in your terminal. These docs describe terminal app 1.6.1 and VS Code extension 1.0.1.",
   "colors": {
     "primary": "#C2436B",
     "light": "#F08BB0",
@@ -26,55 +26,119 @@
     "primary": {
       "type": "button",
       "label": "Install",
-      "href": "/getting-started/install"
+      "href": "/getting-started/install-vscode"
     }
   },
   "navigation": {
     "groups": [
       {
-        "group": "Introduction",
+        "group": "Get started",
         "pages": [
-          "index"
+          "index",
+          "getting-started/install-vscode",
+          "getting-started/install-terminal",
+          "getting-started/first-run",
+          "getting-started/update-and-uninstall",
+          "getting-started/beta"
         ]
       },
       {
-        "group": "Getting started",
+        "group": "Models",
         "pages": [
-          "getting-started/install",
-          "getting-started/first-run",
-          "getting-started/connect-a-model"
+          "models/choosing-a-model",
+          "models/openrouter",
+          "models/anthropic",
+          "models/google-gemini",
+          "models/groq",
+          "models/openai-compatible",
+          "models/other-providers",
+          "models/local-models"
         ]
       },
       {
         "group": "Using Mochiii",
         "pages": [
           "using/vscode",
-          "using/terminal-commands",
-          "using/plan-and-spec",
+          "using/terminal",
+          "using/modes",
+          "using/adding-context",
           "using/approvals",
-          "using/saved-sessions"
+          "using/undo-and-backups",
+          "using/history",
+          "using/commands"
+        ]
+      },
+      {
+        "group": "Features",
+        "pages": [
+          "features/long-tasks",
+          "features/specs",
+          "features/project-rules",
+          "features/github",
+          "features/team",
+          "features/spending-limits",
+          "features/web-tools",
+          "features/indexing"
         ]
       },
       {
         "group": "MCP",
         "pages": [
-          "mcp/add-a-server"
-        ]
-      },
-      {
-        "group": "Help",
-        "pages": [
-          "troubleshooting"
+          "mcp/overview",
+          "mcp/marketplace",
+          "mcp/add-a-server",
+          "mcp/keys-and-variables",
+          "mcp/troubleshooting"
         ]
       },
       {
         "group": "Reference",
         "pages": [
-          "reference/settings-and-files"
+          "reference/built-in-tools",
+          "reference/vscode-settings",
+          "reference/models-json",
+          "reference/environment-variables",
+          "reference/file-locations",
+          "reference/cli-flags"
+        ]
+      },
+      {
+        "group": "Help",
+        "pages": [
+          "troubleshooting",
+          "help/privacy-and-data",
+          "help/faq",
+          "help/release-notes"
         ]
       }
     ]
   },
+  "redirects": [
+    {
+      "source": "/getting-started/install",
+      "destination": "/getting-started/install-vscode"
+    },
+    {
+      "source": "/getting-started/connect-a-model",
+      "destination": "/models/choosing-a-model"
+    },
+    {
+      "source": "/using/terminal-commands",
+      "destination": "/using/commands"
+    },
+    {
+      "source": "/using/plan-and-spec",
+      "destination": "/features/specs"
+    },
+    {
+      "source": "/using/saved-sessions",
+      "destination": "/using/history"
+    },
+    {
+      "source": "/reference/settings-and-files",
+      "destination": "/reference/file-locations"
+    }
+  ],
   "footer": {
     "socials": {}
   }

@@ -1,0 +1,35 @@
+---
+title: "Privacy and data"
+description: "What stays on your computer, what goes to the model provider you choose, and what Mochiii protects and does not."
+---
+
+Your code is indexed and searched on your computer; what reaches a model provider is your question and the parts of your code that go with it, and which provider that is depends on the model you pick.
+
+*Describes terminal app 1.6.1 and VS Code extension 1.0.1, which works with terminal app 1.6.1 or later.*
+
+## What stays on your computer
+
+- **The index.** Your code is indexed and searched on your own machine, with a model that runs there. Nothing is uploaded to build the index.
+- **Attachments.** PDFs, Word, Excel, PowerPoint and images are turned into text on your machine; only the text goes with the question.
+- **Chats, rules, backups and the audit log** are kept in your state folder and the project's `.mochiii/` folder. See [File locations](/reference/file-locations).
+- **No network listener.** Mochiii's background service talks to its clients over a local socket only you can open; nothing on your machine listens on the network.
+
+## What leaves it
+
+- **To the model provider you chose:** your question, the chat so far, and the parts of your code that answer it (and, in VS Code, the open file and the project's top two levels of folders). With a model on your computer, they go to that server. Prompts sent to a provider are under that provider's own data policy.
+- **To a tool you allow:** a web search sends its query, a remote MCP server receives what each call sends it, and a local MCP server is a program running with your privileges.
+- **Keys** are stored on your machine, readable only by you, and sent only to the provider that issued them.
+
+## What Mochiii protects
+
+- **Secrets in prompts.** Text that looks like an API key is masked before a prompt is sent. Mochiii's own keys are removed exactly, in any common encoding, from everything it sends, and a web call carrying one is refused.
+- **Files that could hold a secret** (`.env*`, `*.pem`, `*.key`, `id_rsa*`, `.aws/`, `.ssh/`, names containing "secret" or "credential") are never indexed, and the agent cannot read SSH and other secret key files, credential stores or shell histories.
+- **The audit log** records each tool call's decision with a hash of its arguments, not the arguments.
+
+## What it does not promise
+
+- **Secret masking is pattern-based.** It knows the key formats of the providers Mochiii supports and of services such as AWS, GitHub, Slack and Stripe. A generic `api_key = "…"`, a password inside a URL, or a short password is not recognised.
+- **MCP servers and commands are not sandboxed.** In VS Code's Auto, commands run without asking inside the project, and the check for outside, sending out or wiping can miss some.
+- **Text the agent has read can be sent on.** A web search can carry text from a file or a page the agent read, if an instruction planted there asks it to.
+
+See [Approvals and permissions](/using/approvals) and [Web tools](/features/web-tools).

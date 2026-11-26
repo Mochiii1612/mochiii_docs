@@ -1,68 +1,75 @@
 ---
-title: "VS Code"
-description: "Install the Mochiii extension, chat in the panel, choose a mode, attach files, add MCP servers and manage keys in VS Code."
+title: "VS Code guide"
+description: "The Mochiii panel in VS Code: the composer, the header, the pages, and the commands."
 ---
 
-## Install
+The Mochiii panel is a chat beside your code: ask a question, add context, pick a mode, and see what it does as it works.
 
-Install **Mochiii** from the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=MochiiiAIAgent.mochiii-vscode), or from a terminal:
+*Describes terminal app 1.6.1 and VS Code extension 1.0.1, which works with terminal app 1.6.1 or later.*
 
-```bash
-code --install-extension MochiiiAIAgent.mochiii-vscode
-```
+![The Mochiii panel in the side bar, before the first question](/images/screens/vscode-panel-empty.webp)
 
-The extension runs on Linux x64 and Windows x64. On other systems, use the [terminal app](/getting-started/install).
+## Open it
 
-<Warning>
-  If you also use the terminal app, keep both on the same version. See [Troubleshooting](/troubleshooting#i-updated-one-client-and-chats-stopped-saving).
-</Warning>
+- Click the lotus in the Activity Bar, or run **Mochiii: Open Chat**.
+- **Mochiii: Open Chat in Editor** opens it as an editor tab instead.
+- Right-click a file or folder in the Explorer and choose **Add to Mochiii** to add it to the next question.
 
-## Start a chat
+## The composer
 
-Click the lotus icon in the Activity Bar, paste an API key when asked, and start asking. To use a model on your computer instead, see [Connect a model](/getting-started/connect-a-model).
+A text box, and one row under it:
 
-If no key is connected yet, a question is not sent: the panel says so and why, with **Connect a key**, and sends the question once a key works.
-
-The VS Code panel has its own chat, its own saved chats and its own search, separate from the terminal app's. Your code index, saved rules and spending limits are shared with the terminal app, because they belong to the project. VS Code windows open on the same folder share one chat.
-
-Type `/` to see the commands. One Enter runs the command you pick. A `/command` the panel does not know is not sent to the model. Some commands are in the terminal app only for now.
-
-## Modes
-
-Each chat has a mode. Change it from the button beside the model.
-
-| Mode | What it does |
+| Control | What it does |
 |---|---|
-| **auto** | Edits apply as they arrive, each still gated and undoable. A new chat starts in this mode. |
-| **manual** | Every edit waits for your Apply. |
-| **plan** | Reads your code and writes a plan; proposes no edits. |
+| Mode | Auto, Manual or Plan for this chat. See [Modes](/using/modes) |
+| Model | Choose the model |
+| Thinking effort | Cycles Auto, Low, Medium and High: how long the model reasons before it answers |
+| **+** | Add context: a file by name, the current file, the selection, files, images, problems. See [Adding context](/using/adding-context) |
+| Ring | How much of the model's context the chat uses |
+| Send | Sends; while Mochiii works it becomes Stop |
 
-The `mochiii.defaultMode` setting chooses the mode a new chat starts in.
+Type `/` for the commands and `@` to mention a file. One Enter runs the command you pick, and a `/command` the panel does not know is not sent to the model. See [Commands](/using/commands).
 
-An agent task in VS Code has up to 24 steps.
+## The header
 
-## Attach files
+**New chat**, **History** (every chat, newest first, with search) and **⋯**, which opens the pages:
 
-Attach PDFs (scanned ones too), Word, Excel, PowerPoint and images to a question. They are read on your machine.
+![The ⋯ menu: Customize, Account, Settings, and Bookmark this chat](/images/screens/vscode-more-menu.webp)
 
-## MCP servers and the Marketplace
+- **Customize:** MCP servers, specs, tools. See [MCP](/mcp/overview).
+- **Account:** the provider, the key and the model in use, and the spend.
+- **Settings:** the model, the mode for a new chat, the working folder, history. See [VS Code settings](/reference/vscode-settings).
+- **Bookmark this chat:** a bookmarked chat is never removed from History.
 
-Type `/mcp` in the chat to see your MCP servers, with **Add a server…** and **Browse the marketplace**. Before the Marketplace opens the first time, Mochiii explains that a server you add runs on your machine with your full privileges, and that it shows you exactly what will run and asks you to type the server's name before anything is added.
+## While it works
 
-The Marketplace lists **Verified** servers, official ones Mochiii chose, and **Community** servers from the public MCP Registry, which have not been reviewed. A card says **Needs uv** or **Needs Docker** for a server that launches with them, and shows the exact command it runs. `/mcp-server add` opens the form for adding a server of your own.
+A line over the composer shows the time, the steps and the tokens while a task works, and the totals when it ends. In Auto and Plan a long task continues by itself; see [Long tasks](/features/long-tasks).
 
-On the [website's MCP Marketplace](https://www.mochiii.in/mcp), **Open in VS Code** opens that server in the extension's Marketplace, where you add it.
+![A turn in progress: Mochiii used one tool, and the line over the composer reads "Working… 7m 53s · 1 step · 5.1k tokens"](/images/screens/vscode-working.webp)
 
-A key a server needs is typed into the `/mcp` key form, which keeps it in the form: a click elsewhere does not move it to the chat box.
+## What it sees
 
-## Keys
+Every question carries the project's name and its top two levels of folders, never secret files, and the file you have open (`mochiii.sendEditorContext`). See [Adding context](/using/adding-context).
 
-The provider key is kept in VS Code's secret storage, not in `settings.json`. Type `/connect` to change it. **Forget key** asks before it removes the key.
+## Its own chat
 
-## A model on your computer
+The panel has its own chat, its own saved chats and its own search, apart from the terminal app's. VS Code windows open on the same folder share one chat. Your code index, saved rules and spending limits are shared with the terminal app, because they belong to the project.
 
-Set `mochiii.apiBase` to the server's address (for Ollama, `http://localhost:11434/v1`) and `mochiii.model` to the model's name. Checking what a local model can do (`/agent check`) and the compact agent need the terminal app, which reads the model's context window from the server.
+## Commands in the Command Palette
+
+| Command | What it does |
+|---|---|
+| Mochiii: Open Chat | Opens the panel |
+| Mochiii: Open Chat in Editor | Opens the chat in an editor tab |
+| Mochiii: Index Folder for Code Search | Builds the code index for the folder |
+| Mochiii: Add to Mochiii | Adds the file or folder to the next question (Explorer) |
+| Mochiii: Choose Working Folder | Picks the folder Mochiii works in, in a multi-folder workspace |
+| Mochiii: Set API Key | Stores a provider key |
+| Mochiii: Browse MCP Marketplace | Opens the Marketplace in an editor tab |
+| Mochiii: Add MCP Server… | Adds a server of your own |
+| Mochiii: Restart Daemon | Restarts the background service, for example after changing `mochiii.apiBase` |
+| Mochiii: Show Daemon Log | The background service's log |
 
 ## When an answer does not arrive
 
-A turn that hears nothing from Mochiii's background service for 10 minutes (35 while a tool runs; time waiting for your approval does not count) ends with **No answer arrived** and **Try again**.
+A turn that hears nothing from the background service for 10 minutes (35 while a tool runs) ends with **No answer arrived** and **Try again**. Time waiting for your approval does not count.

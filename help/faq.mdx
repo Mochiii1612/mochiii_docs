@@ -1,0 +1,47 @@
+---
+title: "FAQ"
+description: "Short answers to common questions about Mochiii, each with a link to the page that covers it."
+---
+
+Short answers to the questions people ask most, each with the page that covers it.
+
+*Describes terminal app 1.6.1 and VS Code extension 1.0.1, which works with terminal app 1.6.1 or later.*
+
+<AccordionGroup>
+  <Accordion title="Which versions are current?">
+    Terminal app 1.6.1 and VS Code extension 1.0.1. Extension 1.0.1 works with terminal app 1.6.1 or later, so if you use both, update the terminal app first. See [Update and uninstall](/getting-started/update-and-uninstall).
+  </Accordion>
+  <Accordion title="I installed a Mochiii .vsix by hand. What now?">
+    Uninstall it before installing from the Marketplace. VS Code will not replace a build numbered 1.1.0 to 1.6.1 with 1.0.1.
+  </Accordion>
+  <Accordion title="Which systems does it run on?">
+    The terminal app: Linux x64 and ARM64, macOS on Apple Silicon, Windows x64, and Windows on ARM through emulation. The VS Code extension: Linux x64 and Windows x64. Intel Macs are not supported. See [Install the terminal app](/getting-started/install-terminal) and [Install in VS Code](/getting-started/install-vscode).
+  </Accordion>
+  <Accordion title="Does Mochiii change my files without asking?">
+    In VS Code's Auto, yes, inside the project, after a one-time warning; it still asks for anything it recognises as going outside the project, sending out or wiping data. In Manual every edit waits for you, and Plan makes no edits. The terminal app asks unless you turn on auto-approve. See [Modes](/using/modes).
+  </Accordion>
+  <Accordion title="Can I undo what it did?">
+    Yes. Every applied edit is backed up first: **Undo this task's edits** in VS Code, or `mochiii edits undo` in the project. See [Undo and backups](/using/undo-and-backups).
+  </Accordion>
+  <Accordion title="Can I use a model on my own computer?">
+    Yes: Ollama, LM Studio, llama.cpp or vLLM, with no key. See [Local models](/models/local-models).
+  </Accordion>
+  <Accordion title="Why does a model on my computer use no tools?">
+    In the terminal app it gets tools only after `/agent on`, and Mochiii first checks what the model can do. See [Local models](/models/local-models#how-mochiii-picks-full-agent-compact-agent-or-chat).
+  </Accordion>
+  <Accordion title="Why are my terminal and VS Code chats separate?">
+    Each client keeps its own chat, saved chats and search; your index, rules and spending limits are shared. See [History, saved chats and /compact](/using/history).
+  </Accordion>
+  <Accordion title="How do I keep spending under control?">
+    `/usage` and `/budget` in the terminal app, `/cost` and the Account page in VS Code. Mochiii stops and asks at a session's or a day's limit. See [Spending limits](/features/spending-limits).
+  </Accordion>
+  <Accordion title="How do I add an MCP server?">
+    From the Marketplace in VS Code, or your own by command, URL or pasted JSON in either client. See [MCP overview](/mcp/overview).
+  </Accordion>
+  <Accordion title="Is Mochiii open source?">
+    No. Mochiii is proprietary, all rights reserved. Versions already published under Apache-2.0 (extension 0.1.1 and earlier) keep that licence.
+  </Accordion>
+  <Accordion title="Where do I report a bug?">
+    supportmochiii@gmail.com. Security problems go to mochiiijuly@gmail.com only. See [Beta](/getting-started/beta).
+  </Accordion>
+</AccordionGroup>

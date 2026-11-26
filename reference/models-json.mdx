@@ -1,0 +1,68 @@
+---
+title: "models.json"
+description: "The configuration file behind Mochiii: model tiers, budgets, retrieval, and the tools and MCP servers agent mode may use."
+---
+
+`models.json` is Mochiii's configuration: the model tiers, the budgets, and the `mcp` block that says which tools agent mode may use and how.
+
+*Describes terminal app 1.6.1 and VS Code extension 1.0.1, which works with terminal app 1.6.1 or later.*
+
+## Which file is used
+
+| Client | Configuration |
+|---|---|
+| Terminal app | Built into the program. The background service's `--config <path>` flag names another (see [CLI flags](/reference/cli-flags#background-service-flags)) |
+| VS Code extension | The `models.json` it ships. `mochiii.configPath` points at one of your own (an absolute path); editing the shipped file in place is undone by the next update |
+
+Mochiii stops at start with a specific error if the file is missing or malformed, or if a tier marked `active` has no model. Unknown keys are warned about, never silently ignored.
+
+## Tiers
+
+```json
+{
+  "config_version": 1,
+  "default_tier": "deepseek_v4_pro",
+  "tiers": {
+    "primary":         { "slug": "deepseek/deepseek-v4-flash", "active": true },
+    "deepseek_v4_pro": { "slug": "deepseek/deepseek-v4-pro",   "active": true }
+  }
+}
+```
+
+A tier names a model as OpenRouter names it, and `/model <tier>` selects it. The shipped tiers are listed on [OpenRouter](/models/openrouter#models). A tier can also carry:
+
+| Field | What it does |
+|---|---|
+| `reasoning_effort` | `low`, `medium` or `high`: asks the model to think before it answers |
+| `provider_sort` | `price` picks the cheapest host, `throughput` the fastest (OpenRouter) |
+| `max_output_tokens` | Lowers the cap on one answer, 32768 by default; higher values are clamped |
+| `context_window` | The model's window, used by `/usage` |
+
+`MOCHIII_MODEL` or `mochiii.model` replaces every tier with one model.
+
+## The mcp block
+
+```json
+"mcp": {
+  "enabled": true,
+  "builtin": { "tools": { "web_search": "allow", "web_fetch": "allow" } }
+}
+```
+
+- `builtin.tools` sets each [built-in tool](/reference/built-in-tools)'s policy: `allow`, `ask` or `deny`. A tool not listed is `ask`.
+- `servers` holds MCP servers of your own; each needs `acknowledged_unconfined: true`, because it runs unconfined.
+- `budget` holds the per-turn limits, the spending limits (`spend`) and the long-task limits (`task`):
+
+```json
+"budget": {
+  "max_turn_tokens": 600000,
+  "turn_timeout_seconds": 600,
+  "max_advertised_tools": 24,
+  "spend": { "session_tokens": 3000000, "session_usd": 1.00, "day_tokens": 15000000, "day_usd": 5.00 },
+  "task": { "max_minutes": 30, "max_usd": 0.5, "max_calls": 150 }
+}
+```
+
+## Other settings
+
+`retrieval.disabled`, `retrieval.rerank_disabled`, `retrieval.context_budget_chars` (code sent per question, 8000 characters by default), `no_scrub`, and the `zdr` block of routing flags, which only OpenRouter acts on.

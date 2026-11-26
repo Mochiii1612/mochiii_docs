@@ -1,0 +1,63 @@
+---
+title: "Release notes"
+description: "What changed in each release of the Mochiii terminal app and VS Code extension, newest first."
+---
+
+What changed in each release that you can see, newest first; the terminal app and the VS Code extension have their own version numbers.
+
+*Describes terminal app 1.6.1 and VS Code extension 1.0.1, which works with terminal app 1.6.1 or later.*
+
+## VS Code extension 1.0.1 — 22 November 2026
+
+The first Marketplace update since 0.1.0 (Linux) and 0.1.1 (Windows). It bundles Mochiii 1.6.1.
+
+**Before you update**
+
+- Using the terminal app too? Update it to 1.6.1 or later first, run `mochiii -stop` in each folder you use it in, then reload VS Code.
+- Installed a `.vsix` numbered 1.1.0 to 1.6.1 by hand? Uninstall it first. VS Code will not replace it with a lower number.
+
+**Changed**
+
+- **Auto is full access inside the project:** no questions for edits, commands, tests, project installs or local git, after a one-time warning. It still asks when it recognises going outside the project (computer-wide installs and settings included), sending out, or wiping data. The check can miss some: commands are not sandboxed. Manual and Plan ask as before. Auto as your default can only be set in your own user settings, never by a project. See [Modes](/using/modes).
+- **Long tasks continue by themselves** in Auto and Plan, up to an hour or 400 steps, then offer Resume. A line shows time, steps and tokens while a task works, and the totals when it ends.
+- **It sees the open folder:** every question carries the project's name and top two levels (never secret files). Right-click a file or folder in Explorer and choose Add to Mochiii.
+- **Code search without the terminal app:** Mochiii asks once per folder to index it, or run Mochiii: Index Folder for Code Search.
+- **A quieter panel:** one row under the prompt, three buttons in the header, your recent chats in an empty chat, and colours from your VS Code theme.
+- **Clearer cards:** an approval has one primary button and a one-line warning; an edit shows its change in the card.
+- **One place per control:** Settings is one page, Account is one card, and MCP servers are one list with one Add server button.
+- **Agent mode is on** for providers' models that support tools; web search is off.
+- **The panel has its own chat**, apart from the terminal app's.
+- **MCP servers** can be added from the built-in Marketplace or by command, URL or pasted JSON.
+
+**Fixed**
+
+- An MCP server's buttons no longer run off a narrow side bar.
+
+<Note>
+  Only 0.1.0 and 0.1.1 were published on the Marketplace before 1.0.1. Other extension builds, numbered 1.1.0 to 1.6.1, were installed by hand.
+</Note>
+
+## Terminal app 1.6.1 — 21 November 2026
+
+- **The chat lives in your terminal's scrollback.** Its scrollbar and wheel move through all of it, a drag selects any length of it, and it stays after you quit. `/copy` prints the whole chat again with no line cut. `mochiii --fullscreen` keeps the old full screen.
+- **A new look:** the first screen is the lotus, "What can I do for you?" and the prompt; the prompt is a `➤` line between two rules; answers start with `↬`; a spinner line shows while Mochiii works; the model, context, cost, auto-approve and keys sit under the prompt.
+- **Auto-approve: `Ctrl+Space`** (or `/auto`). Tool calls run and edits apply without asking, backups kept; reading outside the project and a command that would run in the project itself still ask. Off every time Mochiii starts.
+- **Web search and fetch no longer ask** when the tools are on `allow`. Set either to `ask` to see every call.
+- **An approval waits for your answer** instead of giving up after five minutes; closing the terminal or panel still ends it.
+- **Addresses in answers open whole** with `Ctrl+click`, even when wrapped over two lines.
+
+## 1.6.0 — 20 November 2026
+
+- **The terminal app and VS Code no longer share a chat**, and each terminal window has its own. Your index, rules and spending limits are still shared.
+- **Update the terminal app and the extension together:** the first new version to open chat memory upgrades it, and an older one cannot use it.
+- **New installs can build their code index again,** from Mochiii's own copies of the code-search engine when Microsoft's download address fails. If an install warned, update and run `mochiii download-model`.
+- **MCP:** `/mcp` in the terminal app opens a panel of your servers, with paste-JSON adding; keys are asked for when a server is added; a server that fails to start says why; a key written inline in a server's arguments is refused; secrets in third-party tool arguments are redacted; one failed call no longer takes a server down; Marketplace cards show the whole tool count and "Needs uv" or "Needs Docker".
+- **Keys:** a key every model refuses is not stored; in VS Code a key typed into the connect popup stays there, and Forget key asks first.
+- **Terminal app:** every launch starts a new chat, and quitting an unsaved chat asks first; typed text no longer answers an approval; a `/plan` turn offers no edits; an empty answer from the model is said.
+- **VS Code:** one Enter runs a slash command; `/diff` works; an unknown `/command` is not sent to the model; `/mcp-server add` opens the add form.
+- **Licence:** Mochiii is proprietary, all rights reserved. Versions already published under Apache-2.0 keep that licence.
+
+## 1.5.1 — 27 October 2026
+
+- The installer ends on the one line your terminal needs when it cannot find `mochiii` yet.
+- A startup file the installer cannot change no longer stops it.

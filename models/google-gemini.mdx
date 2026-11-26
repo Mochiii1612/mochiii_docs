@@ -1,0 +1,33 @@
+---
+title: "Google Gemini"
+description: "Use a Google Gemini API key with Mochiii."
+---
+
+Paste a Google Gemini key, which starts with `AIza`, and Mochiii sends your questions to Google.
+
+*Describes terminal app 1.6.1 and VS Code extension 1.0.1, which works with terminal app 1.6.1 or later.*
+
+| | |
+|---|---|
+| Address | `https://generativelanguage.googleapis.com/v1beta/openai` |
+| Key | starts with `AIza` |
+| Name for `/connect` | `gemini`, or `google` |
+
+## Connect
+
+<Steps>
+  <Step title="Get a key">
+    Create an API key in your Google Gemini account.
+  </Step>
+  <Step title="Open the provider list">
+    In the terminal app type `/provider` (or `/connect`); in VS Code type `/connect`. Pick **Google Gemini**, or **Any key** to let Mochiii tell the provider from the key.
+  </Step>
+  <Step title="Paste the key">
+    The key is asked for in a masked box, never as an argument. Mochiii checks it with Google Gemini before it stores it; a key Google Gemini refuses is not stored.
+  </Step>
+  <Step title="Pick a model">
+    For any provider but OpenRouter, connecting asks Google Gemini which models it serves, finds one that answers, and `/model` then lists Google Gemini's own models.
+  </Step>
+</Steps>
+
+The key is sent to Google Gemini and to no other provider. See [Choosing a model](/models/choosing-a-model) for switching models and checking which key is in use.

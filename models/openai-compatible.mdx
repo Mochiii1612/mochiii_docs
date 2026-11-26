@@ -1,0 +1,45 @@
+---
+title: "OpenAI-compatible"
+description: "Point Mochiii at any server that speaks the OpenAI chat API, with or without a key."
+---
+
+Any server that speaks the OpenAI chat API works: give Mochiii its address, its model's name and, if it needs one, a key.
+
+*Describes terminal app 1.6.1 and VS Code extension 1.0.1, which works with terminal app 1.6.1 or later.*
+
+## In the terminal app
+
+- **From the chat:** `/provider <address>` or `/connect <address>`, for example `/connect http://localhost:8080/v1` for a server on this computer.
+- **From the environment,** before Mochiii starts:
+
+  ```bash
+  export MOCHIII_API_BASE="https://your-server.example/v1"
+  export MOCHIII_API_KEY="..."      # only if the server needs one
+  export MOCHIII_MODEL="model-name" # as the server names it
+  mochiii
+  ```
+
+  If the background service is already running, run `mochiii --stop` first: it reads these when it starts.
+
+`MOCHIII_MODEL` replaces every tier in `models.json`, for a server that knows none of those names.
+
+## In VS Code
+
+<Steps>
+  <Step title="Set the address and the model">
+    In VS Code's Settings, set `mochiii.apiBase` to the server's address and `mochiii.model` to the model's name.
+  </Step>
+  <Step title="Restart the service">
+    Run **Mochiii: Restart Daemon**.
+  </Step>
+</Steps>
+
+Both settings are machine-scoped on purpose: a project's `.vscode/settings.json` cannot send your prompts to an address the repository chooses. See [VS Code settings](/reference/vscode-settings).
+
+<Note>
+  A key you stored for a provider is never sent to a custom address.
+</Note>
+
+## OpenAI itself
+
+OpenAI is one of the [17 providers](/models/other-providers): its keys start with `sk-proj-` or `sk-svcacct-`, and its address is `https://api.openai.com/v1`.
