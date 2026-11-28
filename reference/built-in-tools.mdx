@@ -5,7 +5,7 @@ description: "Every tool Mochiii's agent has built in, what it does, and whether
 
 These are the tools built into Mochiii; each has a policy (`allow` runs without asking, `ask` asks you, `deny` never offers it), and a few always ask whatever the policy says.
 
-*Describes terminal app 1.6.1 and VS Code extension 1.0.1, which works with terminal app 1.6.1 or later.*
+*Describes terminal app 1.6.1 and VS Code extension 1.0.2, which works with terminal app 1.6.1 or later.*
 
 In VS Code, **Auto** answers the questions in this table for you inside the project, and **Manual** leaves them to you. See [Modes](/using/modes). In the terminal app, auto-approve (`Ctrl+Space`) answers them for you.
 
@@ -44,6 +44,8 @@ In VS Code, **Auto** answers the questions in this table for you inside the proj
 | `web_search` | Searches the web | allow (a model on your computer: off until `/web on`) | ask (a model on your computer: not offered) |
 | `web_fetch` | Reads a web page | allow (as above) | ask (as above) |
 | `github` | Reads this project's issues, pull requests and CI failures. Only once a GitHub token is connected | allow | ask (a model on your computer: not offered) |
+
+In the terminal app the web tools run without asking, even with auto-approve off. In VS Code, **Auto** runs them without asking and **Manual** asks before each call; a model on your computer is offered no tool that reaches the internet, `github` included.
 
 ## Tasks and specs
 

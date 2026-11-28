@@ -5,7 +5,7 @@ description: "See tokens and cost from your provider's bill with /usage, and lim
 
 Mochiii adds up what every model call bills and stops to ask before going past a session's or a day's limit.
 
-*Describes terminal app 1.6.1 and VS Code extension 1.0.1, which works with terminal app 1.6.1 or later.*
+*Describes terminal app 1.6.1 and VS Code extension 1.0.2, which works with terminal app 1.6.1 or later.*
 
 ![/usage and /budget in the terminal app: tokens in and out for this chat and this session, then 4.3K of 3.00M tokens and $0.00 of $1.00 for the session, and 6.4K of 15.00M tokens and $0.00 of $5.00 for today](/images/screens/terminal-usage-budget.webp)
 
@@ -13,7 +13,7 @@ Mochiii adds up what every model call bills and stops to ask before going past a
 
 | Limit | Default | Counts |
 |---|---|---|
-| This session | 3,000,000 tokens or $1.00 (VS Code: 15,000,000 tokens or $5.00) | One run of the client: the terminal app, or one VS Code window |
+| This session | 3,000,000 tokens or $1.00 | One run of the client: the terminal app, or one VS Code window |
 | Today | 15,000,000 tokens or $5.00 | Every project on this computer |
 
 Tokens are always counted; dollars where the provider reports them. At 80% you are told once. At a limit Mochiii stops and asks: the turn in progress ends with a summary of what it did, and the next question is refused before it reaches the model, until you type `/budget more` to allow another allotment. A long task stops the same way and is saved for `/task resume` (in VS Code, for **Resume**).
@@ -25,12 +25,12 @@ Tokens are always counted; dollars where the provider reports them. At 80% you a
 | `/usage` | Both | Tokens in (and how many were cached), tokens out and dollars, for this chat and this session, and how full the context is |
 | `/budget` | Both | This session's and today's spend against their limits; `/budget more` allows another allotment of one that is near |
 | `/cost` | VS Code | What the last turn cost, as the provider billed it |
-| **⋯ → Account** | VS Code | This session's and today's spend |
+| **⋯ → Account** | VS Code | This session's and today's spend against their limits, in tokens and dollars |
 
 These answer from the provider's own bill, not an estimate, and cost no model call.
 
 <Note>
-  In VS Code a session is one run of a VS Code window: every question asked in it counts toward the session's limit. The extension's own `models.json` sets that limit to the day's, 15,000,000 tokens or $5.00, so that one long task is not cut at the terminal's 3,000,000.
+  The limits are the same in both clients. In VS Code a session is one run of a VS Code window: every question asked in it, and every step of a long task, counts toward the session's limit.
 </Note>
 
 The limits are set under `mcp.budget.spend` in [models.json](/reference/models-json).

@@ -5,16 +5,16 @@ description: "web_search and web_fetch: when Mochiii can look things up on the w
 
 With the web tools, the agent can search the web and read pages; an answer that used them ends with the pages it read.
 
-*Describes terminal app 1.6.1 and VS Code extension 1.0.1, which works with terminal app 1.6.1 or later.*
+*Describes terminal app 1.6.1 and VS Code extension 1.0.2, which works with terminal app 1.6.1 or later.*
 
 ## Where they are on
 
 | | `web_search` and `web_fetch` |
 |---|---|
-| Terminal app, a provider's model | On, and they run without asking |
+| Terminal app, a provider's model | On, and they run without asking, even with auto-approve off |
 | Terminal app, a model on your computer | Off until `/web on` (and `/agent on`) |
 | VS Code extension, a provider's model | On: **Manual** asks before each call, **Auto** runs them without asking |
-| VS Code extension, a model on your computer | Off |
+| VS Code extension, a model on your computer | Not offered, and neither is any other tool that reaches the internet, `github` included |
 | A long task (`/fix`, `/debug`, `/refactor`, `/hunt`, `/task` in the terminal app; `/hunt` in VS Code) | Not used |
 
 Set either tool to `ask` in [models.json](/reference/models-json) to see every call before it is sent, or to `deny` to turn it off. In VS Code, point `mochiii.configPath` at a `models.json` of your own to change the bundled settings.

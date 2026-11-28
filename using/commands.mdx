@@ -5,7 +5,7 @@ description: "Every slash command in the Mochiii terminal app and the VS Code ex
 
 Type `/` in either client to see its commands, and keep typing to narrow the list; this page lists them all and says which client has each.
 
-*Describes terminal app 1.6.1 and VS Code extension 1.0.1, which works with terminal app 1.6.1 or later.*
+*Describes terminal app 1.6.1 and VS Code extension 1.0.2, which works with terminal app 1.6.1 or later.*
 
 A command that needs more text prints its usage when you type it alone. A `/word` on its own that a client does not know is answered there and not sent to the model; followed by more text, it is sent as a question. The terminal app's keys are in the [Terminal app guide](/using/terminal#keys).
 
@@ -99,4 +99,4 @@ Each sends what you type after it to the model, with a task.
 | `/hunt <area>` | Hunts for real bugs, each proved by a failing run | ✓ |✓ |
 | `/task <goal>` | Runs a long task; `/task` alone shows it; also `resume`, `review`, `discard`, `budget` | ✓ | |
 
-In the terminal app, `/fix`, `/debug`, `/refactor`, `/hunt` and `/task` run as long tasks with their own budget. In VS Code, `/hunt` does too; `/fix`, `/debug` and `/refactor` are prompts there, and any task continues by itself in Auto and Plan. See [Long tasks](/features/long-tasks).
+In the terminal app, `/fix`, `/debug`, `/refactor`, `/hunt` and `/task` run as long tasks with their own budget. In VS Code, `/hunt` does too; `/fix`, `/debug` and `/refactor` are single prompts there, which continue by themselves in Auto. `/task` and `/provider` are in the terminal app only. See [Long tasks](/features/long-tasks).

@@ -5,7 +5,7 @@ description: "/debug, /fix, /refactor and /hunt work through a whole job in step
 
 A long task keeps working on one job (find and fix a bug, refactor, hunt for bugs) across many steps, within a time and spend budget, and you can pick it up again later.
 
-*Describes terminal app 1.6.1 and VS Code extension 1.0.1, which works with terminal app 1.6.1 or later.*
+*Describes terminal app 1.6.1 and VS Code extension 1.0.2, which works with terminal app 1.6.1 or later.*
 
 Long tasks need agent mode, so a model that can use tools.
 
@@ -52,9 +52,11 @@ In **Auto** and **Plan**, a task continues by itself: when a turn ends at a limi
 |---|---|
 | A task | 1 hour or 400 steps, then **Resume** |
 | One part (segment) | 25 steps or 10 minutes |
-| Spend | 15,000,000 tokens or $5.00 a day, the same for one VS Code window's session (see [Spending limits](/features/spending-limits)) |
+| Spend | 3,000,000 tokens or $1.00 a session (one VS Code window), 15,000,000 tokens or $5.00 a day (see [Spending limits](/features/spending-limits)) |
 
-`/hunt` runs as in the terminal app: the background service runs it as a long task with its own budget (30 minutes, $0.50, 150 model calls), and a line in the chat marks each segment. When it stops before it is finished, **Resume** carries it on from its saved point. `/fix`, `/debug` and `/refactor` are prompts in VS Code, and continue as any task does.
+`/hunt` is the long-task runner in VS Code, as in the terminal app: the background service runs it as a long task with its own budget (30 minutes, $0.50, 150 model calls), and a line in the chat marks each segment. When it stops before it is finished, it says to press **Resume**, which carries it on from its saved point.
+
+`/fix`, `/debug` and `/refactor` are single prompts in VS Code; in **Auto** each continues by itself, as any task does. `/task` is in the terminal app only.
 
 A line over the composer shows the time, the steps and the tokens while the task works, and the totals when it ends.
 
