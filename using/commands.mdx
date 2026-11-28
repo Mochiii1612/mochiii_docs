@@ -7,7 +7,7 @@ Type `/` in either client to see its commands, and keep typing to narrow the lis
 
 *Describes terminal app 1.6.1 and VS Code extension 1.0.1, which works with terminal app 1.6.1 or later.*
 
-A command that needs more text prints its usage when you type it alone. A command a client does not know is not sent to the model. The terminal app's keys are in the [Terminal app guide](/using/terminal#keys).
+A command that needs more text prints its usage when you type it alone. A `/word` on its own that a client does not know is answered there and not sent to the model; followed by more text, it is sent as a question. The terminal app's keys are in the [Terminal app guide](/using/terminal#keys).
 
 ## Chat and history
 
@@ -35,9 +35,9 @@ A command that needs more text prints its usage when you type it alone. A comman
 | `/account` | The provider, key and model in use, and the spend | ✓ | ✓ |
 | `/agent` | Tools for a model on this computer: `/agent on`, `/agent off`, `/agent check` | ✓ | |
 | `/web` | Internet tools for a model on this computer: `/web on`, `/web off` | ✓ | |
-| `/usage` | Terminal: tokens and cost this session, and how full the context is. VS Code: the last turn's tokens and context | ✓ | ✓ |
+| `/usage` | Tokens and cost for this chat and this session, and how full the context is | ✓ | ✓ |
 | `/cost` | What the last turn cost, as the provider billed it | | ✓ |
-| `/budget` | Spending limits for this session and today; `/budget more` raises one that is near | ✓ | |
+| `/budget` | Spending limits for this session and today; `/budget more` raises one that is near | ✓ | ✓ |
 | `/effort` | Shows or sets thinking effort: `/effort low`, `medium`, `high` | | ✓ |
 
 ## Working in the project
@@ -55,9 +55,9 @@ A command that needs more text prints its usage when you type it alone. A comman
 | `/status` | Workspace, model, tools, key and background service in one answer | | ✓ |
 | `/doctor` | Checks the things that commonly stop Mochiii working | | ✓ |
 | `/config` | Opens the Mochiii Settings page | | ✓ |
-| `/remember <text>` | Keeps a rule for every later chat in this project | ✓ | |
-| `/rules` | The saved rules, numbered | ✓ | |
-| `/forget <number>` | Removes a saved rule | ✓ | |
+| `/remember <text>` | Keeps a rule for every later chat in this project | ✓ |✓ |
+| `/rules` | The saved rules, numbered | ✓ |✓ |
+| `/forget <number>` | Removes a saved rule | ✓ |✓ |
 | `/mcp` | Terminal: the MCP panel. VS Code: your servers, with Authenticate, Set key and Check connection | ✓ | ✓ |
 | `/mcp-server` | Terminal: the tools on offer, and add or remove a server. VS Code: your servers and the Marketplace | ✓ | ✓ |
 | `/mouse` | Mouse capture on or off | ✓ | |
@@ -66,10 +66,10 @@ A command that needs more text prints its usage when you type it alone. A comman
 
 | Command | What it does | Terminal | VS Code |
 |---|---|:---:|:---:|
-| `/github` | Mochiii's GitHub account and this project's repository: `/github connect`, `use`, `disconnect` | ✓ | |
-| `/issue <number>` | An issue and its comments, attached to your next question | ✓ | |
-| `/issues [label]` | The open issues; a label narrows them | ✓ | |
-| `/pr` | Pull requests: `/pr <n>` shows one, `/pr <n> log` says why its CI failed | ✓ | |
+| `/github` | Mochiii's GitHub account and this project's repository: `/github connect`, `use`, `disconnect` | ✓ |✓ |
+| `/issue <number>` | An issue and its comments, attached to your next question | ✓ |✓ |
+| `/issues [label]` | The open issues; a label narrows them | ✓ |✓ |
+| `/pr` | Pull requests: `/pr <n>` shows one, `/pr <n> log` says why its CI failed | ✓ |✓ |
 
 ## Asking the model
 
@@ -96,7 +96,7 @@ Each sends what you type after it to the model, with a task.
 | `/fix <bug>` | Finds and fixes a bug | ✓ | ✓ |
 | `/debug <issue>` | Debugs an issue to its root cause | ✓ | ✓ |
 | `/refactor <change>` | Refactors without changing behaviour | ✓ | ✓ |
-| `/hunt <area>` | Hunts for real bugs, each proved by a failing run | ✓ | |
+| `/hunt <area>` | Hunts for real bugs, each proved by a failing run | ✓ |✓ |
 | `/task <goal>` | Runs a long task; `/task` alone shows it; also `resume`, `review`, `discard`, `budget` | ✓ | |
 
-In the terminal app, `/fix`, `/debug`, `/refactor`, `/hunt` and `/task` run as long tasks with their own budget. In VS Code they are prompts, and any task continues by itself in Auto and Plan. See [Long tasks](/features/long-tasks).
+In the terminal app, `/fix`, `/debug`, `/refactor`, `/hunt` and `/task` run as long tasks with their own budget. In VS Code, `/hunt` does too; `/fix`, `/debug` and `/refactor` are prompts there, and any task continues by itself in Auto and Plan. See [Long tasks](/features/long-tasks).

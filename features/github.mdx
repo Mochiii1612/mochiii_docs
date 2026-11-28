@@ -1,13 +1,13 @@
 ---
 title: "GitHub"
-description: "Read issues and pull requests, and see why CI failed, from the terminal app."
+description: "Read issues and pull requests, and see why CI failed, from the terminal app or VS Code."
 ---
 
 Mochiii reads your project's GitHub repository (issues, pull requests, and why CI failed) and attaches what it finds to your next question.
 
 *Describes terminal app 1.6.1 and VS Code extension 1.0.1, which works with terminal app 1.6.1 or later.*
 
-These commands are in the terminal app. Opening pull requests, answering review comments and merging are not built yet.
+These commands are in the terminal app and in VS Code. Opening pull requests, answering review comments and merging are not built yet.
 
 ## Connect
 
@@ -19,11 +19,11 @@ These commands are in the terminal app. Opening pull requests, answering review 
     Signed in as that account, make a classic personal access token with the scope `repo` only. Leave out `workflow`.
   </Step>
   <Step title="Connect">
-    Type `/github connect` and paste the token into the hidden box. Mochiii checks it with GitHub before it keeps it, and warns if it is a token for your own account.
+    Type `/github connect` on its own and paste the token into the hidden box (in VS Code, the input box that opens at the top of the window). Mochiii checks it with GitHub before it keeps it, and warns if it is a token for your own account. A token typed on the same line as `/github connect` is refused and not shown back.
   </Step>
 </Steps>
 
-The token is stored in `~/.mochiii/github.json`, readable only by you, and is never shown to the model, put in a command's environment, or logged.
+The token is stored in `~/.mochiii/github.json`, readable only by you, and is never shown to the model, put in a command's environment, or logged. Both clients use that one file, so a token connected in either works in both.
 
 ## Read
 
