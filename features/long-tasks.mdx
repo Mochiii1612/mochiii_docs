@@ -16,7 +16,7 @@ Long tasks need agent mode, so a model that can use tools.
 | `/fix <bug>` | Reproduces the bug, fixes it, and verifies the fix |
 | `/debug <issue>` | Reproduces, localises, fixes at the root, and verifies |
 | `/refactor <change>` | Starts from a green baseline and changes the code in small steps, each built and tested |
-| `/hunt <area>` | Looks for real bugs only, each proved by a failing run |
+| `/hunt <area>` | Looks for real bugs only, each proved by a failing run (also in VS Code) |
 | `/task <goal>` | Any long task |
 
 **How it works.** The task runs in segments of up to 20 model calls. Each starts small: your request plus the task's ledger, which holds the plan, the findings with their evidence, the files changed, the last check and a handoff from the segment before. All segments work in one separate working copy of the project, and you review every change once, when the task ends.
@@ -47,6 +47,14 @@ A long task does not use the web tools, and a yes for this turn at an approval l
 {/* SCREENSHOT GAP: Resume after an hour or 400 steps. Not reached with a local CPU model. */}
 
 In **Auto** and **Plan**, a task continues by itself: when a turn ends at a limit its edits are kept, and the next part starts from a handoff with the request, the task list, the files saved and the last check. It goes on for up to an hour or 400 steps, then offers **Resume**. In **Manual**, where an edit waits for you, nothing continues by itself.
+
+| Limit | VS Code |
+|---|---|
+| A task | 1 hour or 400 steps, then **Resume** |
+| One part (segment) | 25 steps or 10 minutes |
+| Spend | 15,000,000 tokens or $5.00 a day, the same for one VS Code window's session (see [Spending limits](/features/spending-limits)) |
+
+`/hunt` runs as in the terminal app: the background service runs it as a long task with its own budget (30 minutes, $0.50, 150 model calls), and a line in the chat marks each segment. When it stops before it is finished, **Resume** carries it on from its saved point. `/fix`, `/debug` and `/refactor` are prompts in VS Code, and continue as any task does.
 
 A line over the composer shows the time, the steps and the tokens while the task works, and the totals when it ends.
 

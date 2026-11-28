@@ -13,8 +13,9 @@ With the web tools, the agent can search the web and read pages; an answer that 
 |---|---|
 | Terminal app, a provider's model | On, and they run without asking |
 | Terminal app, a model on your computer | Off until `/web on` (and `/agent on`) |
-| VS Code extension | Off |
-| A long task | Not used |
+| VS Code extension, a provider's model | On: **Manual** asks before each call, **Auto** runs them without asking |
+| VS Code extension, a model on your computer | Off |
+| A long task (`/fix`, `/debug`, `/refactor`, `/hunt`, `/task` in the terminal app; `/hunt` in VS Code) | Not used |
 
 Set either tool to `ask` in [models.json](/reference/models-json) to see every call before it is sent, or to `deny` to turn it off. In VS Code, point `mochiii.configPath` at a `models.json` of your own to change the bundled settings.
 
@@ -30,7 +31,7 @@ Set either tool to `ask` in [models.json](/reference/models-json) to see every c
 
 ## The sources under an answer
 
-{/* SCREENSHOT GAP: a Sources block. Web tools are off for a local model and in VS Code; not run. */}
+{/* SCREENSHOT GAP: a Sources block. Web tools are off for a local model; not run. */}
 
 An answer that used the web ends with the pages it read, listed by Mochiii itself:
 

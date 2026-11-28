@@ -41,9 +41,9 @@ In VS Code, **Auto** answers the questions in this table for you inside the proj
 
 | Tool | What it does | Terminal app | VS Code |
 |---|---|---|---|
-| `web_search` | Searches the web | allow (a model on your computer: off until `/web on`) | deny |
-| `web_fetch` | Reads a web page | allow (as above) | deny |
-| `github` | Reads this project's issues, pull requests and CI failures. Only once a GitHub token is connected | allow | ask |
+| `web_search` | Searches the web | allow (a model on your computer: off until `/web on`) | ask (a model on your computer: not offered) |
+| `web_fetch` | Reads a web page | allow (as above) | ask (as above) |
+| `github` | Reads this project's issues, pull requests and CI failures. Only once a GitHub token is connected | allow | ask (a model on your computer: not offered) |
 
 ## Tasks and specs
 
